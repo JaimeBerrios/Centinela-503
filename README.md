@@ -1,49 +1,56 @@
-# Centinela 503
+# 🛡️ Centinela-503
 
-Centinela 503 es un proyecto orientado a la adquisición, procesamiento y análisis de datos provenientes de un ESP32 conectado mediante USB a un servidor local.
+Centinela-503 es un proyecto orientado a la adquisición, procesamiento y análisis de datos provenientes de nodos ESP32/LoRa conectados mediante USB a un servidor local. 
 
-El backend está desarrollado en Python y utiliza FastAPI como framework para la API, PySerial para la comunicación con el ESP32, SQLite para persistencia de datos y Scikit-learn para procesamiento y modelos de Machine Learning.
+El **Backend Core** actúa como el núcleo de procesamiento, inteligencia artificial y gestión de base de datos. Está construido con una arquitectura limpia, orientada a eventos y aplicando principios DevSecOps.
 
-## Stack tecnológico
+## 🚀 Características Principales
 
-- Python 3.14
-- FastAPI
-- Uvicorn
-- PySerial
-- Scikit-learn
-- SQLite
-- ESP32
-- Linux Fedora
-- Git
+* **Recepción Asíncrona (PySerial):** Monitor en segundo plano que escucha los datos de los nodos ESP32/LoRa sin bloquear la API principal. Incluye modo simulador automático si no detecta hardware.
+* **Agente de Triaje con IA (Scikit-learn):** Implementación de un modelo de Machine Learning (*Decision Tree Classifier*) que evalúa las alertas entrantes en tiempo real para asignar su nivel de prioridad (Alta/Baja) antes de almacenarlas.
+* **Agrupación Espacial (Haversine):** Algoritmo matemático que procesa las coordenadas GPS de las alertas y las agrupa en "clústeres" si ocurren a menos de 50 metros de distancia, optimizando la carga de datos para el mapa del frontend.
+* **Trazabilidad DevSecOps:** Integración nativa con Azure Boards para el seguimiento automatizado de tareas mediante etiquetas `AB#`.
 
-## Arquitectura general
+## 🛠️ Stack Tecnológico
+
+- **Framework Web:** FastAPI (con Uvicorn)
+- **Lenguaje / Entorno:** Python 3
+- **Base de Datos:** SQLite (Patrón Repositorio)
+- **Machine Learning:** Scikit-learn, Numpy
+- **Hardware Interfacing:** PySerial, ESP32
+- **Sistema Operativo (Recomendado):** Linux Fedora
+- **Control de Versiones:** Git
+
+## 📐 Arquitectura General
 
 ```text
-ESP32
-  │
-  │ USB / Serial
-  ▼
-PySerial
-  │
-  ▼
-Serial Service
-  │
-  ├──────────────► SQLite
-  │
-  ▼
-Procesamiento / Machine Learning
-  │
-  ▼
-FastAPI
-  │
-  ▼
-API REST
-  │
-  ▼
+ESP32 / Nodos LoRa
+       │
+       │ USB / Serial
+       ▼
+    PySerial
+       │
+       ▼
+ Serial Service ───────► SQLite
+       │
+       ▼
+ Agente IA (ML)
+       │
+       ▼
+    FastAPI
+       │
+       ▼
+   API REST
+       │
+       ▼
 Cliente / Frontend
-Estructura del proyecto
+```
+
+## 📁 Estructura del Proyecto
+
+```text
 Centinela-503/
-├── backend/
+├── backend/            # Contiene la API, SQLite, comunicación serial y ML
 │   ├── app/
 │   │   ├── api/
 │   │   ├── core/
@@ -56,62 +63,61 @@ Centinela-503/
 │   ├── tests/
 │   ├── .env.example
 │   └── requirements.txt
-├── docs/
-├── firmware/
+├── docs/               # Documentación técnica y definición de la API
+├── firmware/           # Código C/C++ ejecutado por el ESP32
 ├── .gitignore
 └── README.md
-Componentes principales
-Backend
+```
 
-Contiene la API, acceso a SQLite, comunicación serial, procesamiento de datos y Machine Learning.
+## ⚙️ Guía de Instalación (Para QA y Frontend)
 
-Firmware
+Sigue estos pasos para levantar el servidor localmente con datos simulados o con hardware real.
 
-Contendrá el código ejecutado por el ESP32.
+### 1. Clonar el repositorio
+```bash
+git clone git@github.com:JaimeBerrios/Centinela-503.git
+cd Centinela-503/backend
+```
 
-Docs
+### 2. Configurar el entorno virtual
+Es indispensable usar un entorno aislado para no afectar el sistema operativo.
 
-Contiene documentación técnica del proyecto, arquitectura y definición de la API.
+```bash
+# Crear entorno virtual
+python -m venv .venv
 
-Entorno virtual
-
-El entorno virtual del backend se encuentra en:
-
-backend/.venv
-
-No debe almacenarse en Git.
-
-Para activarlo:
-
-cd ~/Proyectos/Centinela-503/backend
+# Activar en Linux/Mac
 source .venv/bin/activate
-Dependencias Python
 
-Las dependencias se encuentran en:
+# Activar en Windows
+.venv\Scripts\activate
+```
 
-backend/requirements.txt
+### 3. Instalar dependencias
+Asegúrate de tener el entorno activado antes de ejecutar esto:
 
-Para instalarlas:
+```bash
+pip install -r requirements.txt
+```
 
-python -m pip install -r requirements.txt
-Comunicación serial
+### 4. Levantar el servidor
+```bash
+uvicorn app.main:app --reload
+```
+> **Nota:** Al iniciar, el sistema creará la base de datos automáticamente e iniciará el simulador de nodos. Verás los registros de GPS e IA en la terminal.
 
-El ESP32 será detectado normalmente como:
+## 🔌 Comunicación Serial (Hardware Real)
+Si conectas un ESP32 real, será detectado normalmente como `/dev/ttyUSB0` o `/dev/ttyACM0`.
 
-/dev/ttyUSB0
+El usuario del sistema debe pertenecer al grupo `dialout` en Linux:
+```bash
+sudo usermod -a -G dialout $USER
+```
+*No se debe ejecutar el backend como root para acceder al ESP32.*
 
-o:
+## 📡 Endpoints Principales
 
-/dev/ttyACM0
+Puedes probar la API directamente desde la documentación interactiva (Swagger) generada automáticamente ingresando a [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) en tu navegador una vez levantado el servidor.
 
-El usuario del sistema debe pertenecer al grupo:
-
-dialout
-
-No se debe ejecutar el backend como root para acceder al ESP32.
-
-Estado inicial
-
-El entorno de desarrollo está preparado y las dependencias principales se encuentran instaladas.
-
-La lógica de negocio y la implementación del backend se desarrollarán posteriormente sobre esta estructura.
+- **`GET /sensors/`**
+  Retorna el historial de alertas procesado por el algoritmo espacial. Devuelve un JSON estructurado en clústeres listos para ser consumidos y dibujados en mapas (ej. Leaflet).

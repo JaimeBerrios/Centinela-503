@@ -51,7 +51,7 @@ class SerialMonitor:
             lon = base_lon + random.uniform(-0.005, 0.005)
             
             mock_data = json.dumps({
-                "node_id": random.choice([1, 2, 3]),
+                "node_id": random.choice([1, 2]),
                 "status": random.choice(["Normal", "Emergencia"]),
                 "latitude": round(lat, 6),
                 "longitude": round(lon, 6)
