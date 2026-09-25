@@ -1,0 +1,268 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{top=0.90cm,bottom=1.20cm,left=1.55cm,right=1.55cm}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage[skins]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{ragged2e}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{navy}{HTML}{173864}
+\definecolor{cyan}{HTML}{1C88A8}
+\colorlet{ink}{black}
+\colorlet{line}{cyan}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlist[itemize]{leftmargin=4.5mm,itemsep=1.8pt,topsep=2pt,parsep=0pt}
+\renewcommand{\arraystretch}{1.18}
+\emergencystretch=2em
+\newcommand{\sectionicon}[1]{\textcolor{cyan}{#1}\enspace}
+\newcommand{\unablogo}{%
+  \IfFileExists{img/logo-unab.png}
+    {\includegraphics[height=2.20cm]{img/logo-unab.png}}
+    {\textbf{UNAB}}%
+}
+\newcommand{\facultylogo}{%
+  \IfFileExists{img/logo-facultad.png}
+    {\includegraphics[height=1.70cm]{img/logo-facultad.png}}
+    {\textbf{Facultad}}%
+}
+% Versión vectorial del SVG original; conserva sus proporciones al imprimir.
+\newcommand{\centinelalogo}[1]{%
+  \includegraphics[width=#1,keepaspectratio]{img/logo-centinela.pdf}%
+}
+
+\titleformat{\section}
+  {\large\bfseries\color{navy}}
+  {\makebox[6mm]{\thesection}}
+  {2.5mm}{}
+\titlespacing*{\section}{0pt}{7pt}{4pt}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced,colback=white,colframe=line,boxrule=.5pt,arc=1.5mm,
+  left=3mm,right=3mm,top=2.2mm,bottom=2.2mm,
+  before skip=3pt,after skip=4pt,#1
+}
+\newtcolorbox{techbox}[1]{
+  enhanced,colback=white,colframe=line,boxrule=.6pt,
+  borderline west={2.2pt}{0pt}{cyan},arc=1mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=2.5pt,after skip=2.5pt,title={#1},
+  coltitle=navy,fonttitle=\bfseries,
+  attach boxed title to top left={xshift=2mm,yshift=-1.4mm},
+  boxed title style={colback=white,colframe=white,boxrule=0pt}
+}
+\newcommand{\projectheader}{%
+  \noindent
+  \begin{minipage}[b]{0.21\textwidth}
+    \raggedright
+    \unablogo
+  \end{minipage}%
+  \begin{minipage}[b]{0.58\textwidth}
+    \centering
+    {\fontsize{7.2}{8.5}\selectfont\bfseries\color{ink} PROPUESTA FORMAL DE PROYECTO ACADÉMICO\par}
+    \vspace{1.5mm}
+    \centinelalogo{7.6cm}\par
+    \vspace{1.5mm}
+    {\fontsize{7.8}{9}\selectfont\color{ink} XVI Congreso de Informática en El Salvador (CONINFO 2026)\par}
+  \end{minipage}%
+  \begin{minipage}[b]{0.21\textwidth}
+    \raggedleft
+    \facultylogo
+  \end{minipage}
+  \vspace{1.5mm}
+  {\color{navy}\rule{\textwidth}{1.1pt}}
+}
+
+\newcommand{\categoryband}{%
+  \begin{infobox}[colframe=line,top=1.5mm,bottom=1.5mm,before skip=2mm,after skip=2.5mm]
+    \centering\fontsize{8}{9.5}\selectfont\color{navy}
+    \textbf{Categoría a participar:} viii. Inteligencia Artificial (agentes de IA, modelos locales y automatización de código).
+  \end{infobox}
+}
+
+\newcommand{\compactheader}{%
+  \vspace*{0.5mm}
+  \noindent
+  \begin{minipage}[b]{0.21\textwidth}
+    \raggedright
+    \unablogo
+  \end{minipage}%
+  \begin{minipage}[b]{0.58\textwidth}
+    \centering
+    \centinelalogo{6.2cm}\par
+    \vspace{1.5mm}
+    {\fontsize{7.4}{8.5}\selectfont\color{ink} CONINFO 2026 \textperiodcentered{} PROPUESTA ACADÉMICA\par}
+  \end{minipage}%
+  \begin{minipage}[b]{0.21\textwidth}
+    \raggedleft
+    \facultylogo
+  \end{minipage}
+  \vspace{1mm}
+  {\color{navy}\rule{\textwidth}{.8pt}}
+}
+
+\begin{document}
+\color{ink}
+\projectheader
+\categoryband
+
+\begin{infobox}[colframe=navy]
+  \centering\color{navy}\bfseries
+  Plataforma autónoma de respuesta comunitaria para emergencias sin conectividad
+\end{infobox}
+
+\section*{\sectionicon{\faUsers}Equipo desarrollador}
+\begin{infobox}
+\small
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}X >{\color{navy}}r@{}}
+\textcolor{cyan}{\textbullet}\enspace Genesis Abigail Saravia Carpio & sc0139042023 \\
+\textcolor{cyan}{\textbullet}\enspace Rosmeri Estefani Gonzalez Perez & gp0382042023 \\
+\textcolor{cyan}{\textbullet}\enspace Jefferson Jared Bonilla Melendez & bm0749042022 \\
+\textcolor{cyan}{\textbullet}\enspace Florentin Alexander Treminio Herrera & th0988042023 \\
+\textcolor{cyan}{\textbullet}\enspace Jaime Fernando Berrios Ortiz & bo0310042024
+\end{tabularx}
+\end{infobox}
+
+\section[Descripción General]{\sectionicon{\faLock}Descripción General}
+\justifying
+Centinela 503 es una plataforma de respuesta comunitaria para escenarios de desastres naturales, como sismos e inundaciones, diseñada para operar de manera autónoma cuando fallan las telecomunicaciones e internet. Integra nodos ESP32 con tecnología LoRa y un servidor local que coordina el procesamiento de alertas mediante Inteligencia Artificial. El piloto físico operará con dos nodos; la arquitectura contempla su ampliación a una red en malla (\textit{Mesh}) mediante un protocolo de encaminamiento sobre enlaces LoRa.
+
+La vulnerabilidad de El Salvador ante la actividad sísmica y las tormentas tropicales justifica el desarrollo de una solución \textit{offline} que contribuya a mantener la coordinación comunitaria durante una emergencia.
+
+El proyecto tiene una visión de expansión hacia los cuatro departamentos de la zona oriental (San Miguel, Morazán, Usulután y La Unión). Sin embargo, el piloto operativo y las pruebas del prototipo se delimitarán geográficamente al Distrito de San Miguel, municipio de San Miguel Centro, en un entorno controlado de campus.
+Durante la fase de desarrollo y validación del prototipo se utilizarán datos simulados de incidentes, ubicaciones y disponibilidad de brigadas; cualquier prueba con usuarios o espacios institucionales reales se realizará únicamente con la autorización correspondiente.
+
+\begin{infobox}
+\small\justifying
+\textbf{\sectionicon{\faBullseye}Objetivo General}\par
+Desarrollar una prueba de concepto de una plataforma de respuesta comunitaria que integre comunicación LoRa entre dos nodos físicos, procesamiento local mediante Inteligencia Artificial y un dashboard web, para apoyar la gestión de alertas de emergencia sin internet en un entorno controlado de campus del Distrito de San Miguel.
+
+\textbf{Objetivos Específicos}
+\begin{itemize}
+  \item Implementar y evaluar un enlace LoRa entre un nodo base conectado al servidor local y una estación de campo con botón de captura, mediante pruebas de entrega y latencia de alertas sin conexión a internet.
+  \item Desarrollar y evaluar un módulo de Inteligencia Artificial ejecutado íntegramente en el servidor local para clasificar alertas textuales, agrupar reportes relacionados y sugerir prioridades y asignaciones, utilizando datos simulados de incidentes y brigadas.
+  \item Construir y validar un dashboard web local que permita visualizar incidentes priorizados, ubicación de reportes, estado de los nodos y disponibilidad de brigadas, así como registrar las decisiones del Coordinador de Emergencia.
+\end{itemize}
+\end{infobox}
+
+\vfill
+\noindent
+{\footnotesize\color{cyan}\bfseries CENTINELA 503 \hfill PROPUESTA ACADÉMICA}
+
+\newpage
+\compactheader
+
+\section[Núcleo Analítico mediante Inteligencia Artificial]{\sectionicon{\faLightbulb}Núcleo Analítico mediante Inteligencia Artificial}
+La arquitectura incorpora un núcleo analítico de agentes y modelos de Machine Learning ejecutados \textbf{100\% en local mediante Python}. Esta decisión permite procesar alertas sin servicios en la nube e integrar clasificación, agrupamiento y recomendaciones para apoyar la coordinación de emergencias.
+
+\begin{techbox}{\sectionicon{\faComments}Clasificación de textos mediante NLP}
+\small\justifying
+Modelos supervisados analizarán las alertas textuales entrantes (por ejemplo, ``persona atrapada'' o ``calle inundada'') para categorizar el tipo de emergencia y asignar automáticamente un nivel de criticidad, sujeto a la validación del Coordinador de Emergencia.
+\end{techbox}
+\begin{techbox}{\sectionicon{\faProjectDiagram}Agrupamiento espacial con DBSCAN / K-Means}
+\small\justifying
+Algoritmos no supervisados analizarán la proximidad espacial de los reportes, complementada con su información temporal. El sistema identificará agrupaciones de incidentes para consolidar posibles duplicados y visualizar las zonas de mayor concentración de alertas en el mapa de calor local.
+\end{techbox}
+\begin{techbox}{\sectionicon{\faRoute}Asignación optimizada de recursos}
+\small\justifying
+Un modelo de aprendizaje evaluará la disponibilidad de voluntarios o brigadas registradas y la relacionará con las agrupaciones de incidentes y sus niveles de criticidad. El sistema generará sugerencias de asignación y rutas para su validación por el Coordinador de Emergencia.
+\end{techbox}
+
+\section[Arquitectura Técnica Propuesta]{\sectionicon{\faCogs}Arquitectura Técnica Propuesta}
+\vspace{1mm}
+\begin{techbox}{\sectionicon{\faWifi}01 \textperiodcentered{} Comunicaciones}
+\small\justifying
+El prototipo constará de \textbf{2 nodos físicos}: \textbf{1 nodo base conectado al servidor local} y \textbf{1 estación de campo con botón de captura} para activar el registro de una alerta. Ambos utilizarán módulos ESP32 con LoRa y se comunicarán directamente, sin repetidores ni internet. La red en malla (\textit{Mesh}) será una capacidad de expansión futura mediante un protocolo de encaminamiento sobre LoRa; su operación multisalto requerirá nodos adicionales y validación posterior.
+\end{techbox}
+\begin{techbox}{\sectionicon{\faServer}02 \textperiodcentered{} Backend y procesamiento}
+\small\justifying
+Un \textbf{servidor local ejecutará Python y FastAPI} para gestionar la comunicación serial con el nodo base y alojar modelos de Machine Learning mediante bibliotecas como scikit-learn o versiones ligeras de PyTorch/TensorFlow. Será un equipo separado de los \textbf{2 nodos físicos} del piloto, conectado al nodo base para procesar y almacenar de forma persistente las alertas, aun sin conectividad externa.
+\end{techbox}
+\begin{techbox}{\sectionicon{\faDesktop}03 \textperiodcentered{} Interfaz de operación (Dashboard)}
+\small\justifying
+Entorno web local que mostrará un mapa de prueba, la lista de incidentes priorizados, el estado de los nodos, la disponibilidad de brigadas y una línea de tiempo de decisiones orquestadas por los agentes de IA.
+\end{techbox}
+\begin{techbox}{\sectionicon{\faUserCog}04 \textperiodcentered{} Administración y Manejo de Usuarios}
+\small\justifying
+El sistema se administra mediante cuatro roles: Administrador Institucional (configura políticas y audita la red), Coordinador de Emergencia (valida prioridades y asigna tareas), Operador de Brigada (actualiza estado en campo) y Reportante (envía la alerta ciudadana).
+Cada rol contará con permisos diferenciados y autenticación local; solo el Administrador Institucional podrá gestionar usuarios, políticas y bitácoras de auditoría.
+\end{techbox}
+
+\vfill
+\noindent
+{\footnotesize\color{cyan}\bfseries CENTINELA 503 \hfill PROPUESTA ACADÉMICA}
+
+\newpage
+\compactheader
+\vspace{2mm}
+\begin{tcolorbox}[
+  enhanced,colback=white,colframe=navy,arc=2mm,
+  left=4mm,right=4mm,top=3mm,bottom=3mm,
+  title={\faRandom\enspace FLUJO OPERATIVO AUTÓNOMO},fonttitle=\bfseries,
+  coltitle=navy,colbacktitle=white
+]
+\centering\color{ink}
+\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}X c >{\centering\arraybackslash}X c >{\centering\arraybackslash}X@{}}
+\textbf{Alerta ciudadana} & $\boldsymbol{\longrightarrow}$ & \textbf{Enlace LoRa} & $\boldsymbol{\longrightarrow}$ & \textbf{Servidor local} \\
+{\scriptsize Captura en estación de campo} && {\scriptsize Piloto: estación y nodo base} && {\scriptsize Recepción y persistencia}
+\end{tabularx}
+\vspace{3mm}
+{\color{cyan}\rule{.78\linewidth}{.5pt}}\\[3mm]
+\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}X c >{\centering\arraybackslash}X c >{\centering\arraybackslash}X@{}}
+\textbf{Dashboard local} & $\boldsymbol{\longleftarrow}$ & \textbf{Asignación sugerida} & $\boldsymbol{\longleftarrow}$ & \textbf{Agentes de IA} \\
+{\scriptsize Mapa y seguimiento} && {\scriptsize Brigadas y rutas} && {\scriptsize NLP, clustering y prioridad}
+\end{tabularx}
+\end{tcolorbox}
+
+\begin{infobox}
+\textbf{\sectionicon{\faClipboardCheck}Resultados Esperados del Piloto}\par
+\small\justifying
+Se entregará una \textbf{prueba de concepto funcional con 2 nodos físicos en un entorno de campus controlado}: un nodo base conectado al servidor local y una estación de campo con botón de captura. La demostración integrará captura y transmisión de alertas por LoRa, almacenamiento local, procesamiento con IA y visualización en el dashboard web, sin conexión a internet.
+Se entregará un informe de pruebas con mediciones de entrega y latencia de alertas, desempeño de clasificación sobre datos simulados y verificación de las funciones del dashboard. Se documentarán las limitaciones observadas y las condiciones necesarias para ampliar la red.
+\end{infobox}
+
+\begin{infobox}
+\textbf{\textcolor{cyan}{\faLock}\enspace Principio de diseño}\par
+\small\justifying
+La solución prioriza la continuidad operativa: captura, transmisión, análisis y visualización permanecen dentro de la infraestructura local. Esto permite que la comunidad conserve una capacidad básica de coordinación y respuesta incluso durante una interrupción total de internet y telecomunicaciones.
+El piloto se validará mediante tiempo de entrega de alertas, precisión de clasificación, disponibilidad de nodos y porcentaje de asignaciones aceptadas. Se documentarán como límites el alcance de LoRa, la autonomía energética y el entorno controlado de campus; los reportes permanecerán protegidos mediante control de acceso y almacenamiento local.
+\end{infobox}
+
+\section[Alineación con los Objetivos de Desarrollo Sostenible (ODS)]{\sectionicon{\faGlobe}Alineación con los Objetivos de Desarrollo Sostenible (ODS)}
+\justifying
+Centinela 503 vincula la infraestructura accesible, la resiliencia comunitaria y el apoyo institucional con los siguientes ODS. Su contribución se evaluará inicialmente mediante el piloto académico en el Distrito de San Miguel.
+
+\begin{techbox}{\sectionicon{\faCity}ODS 11: Ciudades y Comunidades Sostenibles}
+\small\justifying
+El proyecto propone un componente de ciudad inteligente (\textit{Smart City}) orientado a fortalecer la resiliencia urbana ante desastres. La comunicación LoRa independiente de internet mantiene un canal local de alertas, mientras que el agrupamiento espacial consolida reportes relacionados para prevenir la saturación informativa del centro de coordinación. Esto busca facilitar la gestión de crisis en el Distrito de San Miguel; la cobertura comunitaria ampliada requerirá nuevos nodos y pruebas de campo.
+\end{techbox}
+
+\begin{techbox}{\sectionicon{\faCogs}ODS 9: Industria, Innovación e Infraestructura}
+\small\justifying
+La integración de microcontroladores de bajo costo ESP32, enlaces LoRa e Inteligencia Artificial ejecutada \textbf{100\% en local} promueve una infraestructura accesible y escalable. El procesamiento y almacenamiento locales reducen la dependencia de servicios en la nube y de conectividad permanente. El piloto de dos nodos permitirá validar las funciones esenciales antes de estudiar la ampliación de estaciones y la operación en malla.
+\end{techbox}
+
+\begin{techbox}{\sectionicon{\faUsers}ODS 16: Paz, Justicia e Instituciones Sólidas}
+\small\justifying
+El reporte ciudadano directo y el triaje automatizado mediante IA buscan reducir los tiempos de identificación y priorización de alertas críticas, como apoyo a autoridades locales como Protección Civil y la Policía Nacional Civil (PNC). El Coordinador de Emergencia validará las prioridades y asignaciones; los permisos y las bitácoras permitirán rastrear las decisiones. La reducción efectiva de los tiempos de respuesta institucional deberá verificarse en pruebas posteriores coordinadas con las entidades participantes.
+\end{techbox}
+
+\vfill
+\noindent
+{\footnotesize\color{cyan}\bfseries CENTINELA 503 \hfill PROPUESTA ACADÉMICA}
+\end{document}

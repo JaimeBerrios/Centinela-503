@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Informe de seguridad — DataSecure Global</title>
+<style>
+@page { size: letter; margin: 18mm 17mm 18mm; }
+* { box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; color:#1e293b; font-size:10.5pt; line-height:1.42; margin:0; }
+h1,h2,h3 { color:#173864; margin:0; } h2 { font-size:17pt; border-bottom:2px solid #173864; padding-bottom:4px; margin-top:18px; } h3 { font-size:12pt; margin-top:13px; }
+p { margin:7px 0; text-align:justify; } ul,ol { margin:6px 0 8px; padding-left:21px; } li { margin:3px 0; }
+.cover { min-height:225mm; text-align:center; display:flex; flex-direction:column; align-items:center; padding:8mm 14mm 5mm; border:2px solid #173864; border-radius:8px; }
+.logos { width:100%; display:flex; justify-content:space-between; align-items:center; }.logos img { max-height:50px; max-width:180px; object-fit:contain; }
+.rule { width:100%; border-top:5px solid #173864; margin:17px 0 19px; }.cover h1 { font-size:25pt; line-height:1.18; }.cover .subtitle { font-size:15pt; margin:10px 0; }.team { width:90%; background:#f2f4f7; border:1.5px solid #173864; border-radius:7px; padding:14px 20px; margin-top:22px; }.team h3 { margin:0 0 9px; }.team p { text-align:center; margin:2px 0; font-size:9.5pt; }.cover-bottom { margin-top:auto; width:100%; }.cover-bottom p { text-align:center; }
+.meta { background:#f3f6fa; border-left:5px solid #173864; padding:9px 13px; margin:12px 0; }.meta p { margin:2px 0; text-align:left; }
+table { width:100%; border-collapse:collapse; margin:9px 0 12px; font-size:9.2pt; } th { background:#173864; color:white; text-align:left; } th,td { border:1px solid #9aa9ba; padding:6px; vertical-align:top; } tr:nth-child(even) td { background:#f7f9fb; }
+.box { border:1px solid #173864; border-radius:5px; padding:10px 13px; margin:10px 0; background:#fbfdff; }.box strong { color:#173864; }.pagebreak { break-before:page; }
+.footer { color:#526477; font-size:8.5pt; text-align:center; margin-top:18px; }.small { font-size:9pt; }
+.university { text-align:center; width:100%; }.section-break { break-before:page; }
+</style>
+</head>
+<body>
+<section class="cover">
+  <div class="logos"><img src="img/logo-unab.png" alt="UNAB"><img src="img/logo-facultad.png" alt="Facultad de Tecnología e Innovación"></div>
+  <div class="rule"></div>
+  <div class="university subtitle"><b>UNIVERSIDAD DOCTOR ANDRÉS BELLO</b><br>Regional San Miguel<br>Facultad de Tecnología e Innovación</div>
+  <p style="color:#173864;letter-spacing:2px;font-size:10pt;margin:10px 0 4px"><b>PRÁCTICA EN BIBLIOTECA</b></p>
+  <h1>INFORME TÉCNICO DE SEGURIDAD<br>DATASECURE GLOBAL, S.A.</h1>
+  <p class="subtitle">Organización, Personas y Oficinas</p>
+  <div class="rule"></div>
+  <div class="team"><h3>Alumnos</h3><p>Genesis Abigail Saravia Carpio · Rosmeri Estefani Gonzalez Perez</p><p>Jaime Fernando Berrios Ortiz · Jefferson Jared Bonilla Melendez</p><p>Florentin Alexander Treminio Herrera · Ricardo Antonio Martinez Romero</p><p>Andrea Patricia Nolasco Ortega · Angel Jesus Medrano Argueta</p></div>
+  <div class="cover-bottom"><p><b>Asignatura:</b> Diseño de Sistemas y Seguridad de Redes de Datos</p><p><b>Catedrático:</b> Ing. Franklin Geovany Buruca Hernandez</p><p>San Miguel, El Salvador · Ciclo 2, 2026</p></div>
+</section>
+
+<section class="pagebreak">
+<h2>Introducción</h2>
+<div class="meta"><p><b>Empresa:</b> DataSecure Global, S.A.</p><p><b>Situación:</b> empresa de desarrollo de software y consultoría con 120 empleados; 30 % trabaja remotamente. Maneja datos confidenciales de clientes financieros y sanitarios.</p><p><b>Propósito:</b> establecer medidas organizativas, físicas y operativas que reduzcan la pérdida de datos, el acceso no autorizado y la falta de estandarización.</p></div>
+<p>Como equipo proponemos medidas sencillas para organizar la seguridad desde las personas, los equipos y las instalaciones. Estas ideas se basan en los temas de políticas, planes y procedimientos de seguridad desarrollados en la <i>Enciclopedia de la Seguridad Informática</i>, segunda edición, de Álvaro Gómez Vieites.</p>
+
+<h2>1. Política de seguridad</h2>
+<div class="box">
+<p><strong>Protección de la información:</strong> la información de los clientes, empleados y de la propia empresa deberá utilizarse únicamente para fines laborales.</p>
+<p><strong>Control de acceso:</strong> cada empleado tendrá acceso al sistema de la empresa únicamente durante su horario laboral y de acuerdo con las funciones de su puesto.</p>
+<p><strong>Uso de los equipos:</strong> las computadoras, portátiles y demás dispositivos electrónicos de la empresa deberán utilizarse de manera responsable, únicamente para fines laborales y no personales.</p>
+<p><strong>Protección de contraseñas:</strong> los empleados deberán utilizar contraseñas seguras, mantenerlas en secreto y no compartirlas con otros compañeros.</p>
+<p><strong>Trabajo remoto seguro:</strong> los empleados que trabajen de forma remota deberán cumplir el mismo reglamento y las mismas medidas de seguridad que el personal de la oficina.</p>
+<p><strong>Copias de seguridad:</strong> cada empleado tendrá la seguridad de que los datos de trabajo importantes cuentan con una copia de respaldo.</p>
+<p><strong>Capacitación y aseguramiento de datos:</strong> la empresa proporcionará actividades de formación y concienciación. Además, mantendrá protegidos los datos de empleados y clientes, respetando la seguridad y confidencialidad de la información.</p>
+</div>
+
+<h2 class="section-break">2. Inventario básico</h2>
+<p>El inventario permite conocer los equipos y dispositivos que deben protegerse. Para cada uno se recomienda anotar el responsable, ubicación, número de serie y estado.</p>
+<table><tr><th>Activo</th><th>Uso o función dentro de la empresa</th></tr>
+<tr><td>Computadoras y laptops</td><td>Equipos de trabajo para empleados y personal remoto.</td></tr>
+<tr><td>Firewall</td><td>Dispositivo dedicado para la segmentación estricta y protección de la red.</td></tr>
+<tr><td>Servidores</td><td>Equipos que alojan sistemas, aplicaciones y servicios de la empresa.</td></tr>
+<tr><td>Dispositivos físicos de almacenamiento</td><td>Respaldo y gestión segura de los datos empresariales.</td></tr>
+<tr><td>Tarjetas de red de alta ganancia</td><td>Mejoran la conectividad de los equipos que las requieran.</td></tr>
+<tr><td>Memorias USB</td><td>Medios removibles; deberán utilizarse solo cuando estén autorizados.</td></tr>
+</table>
+
+<h2>3. Altas y bajas de empleados</h2>
+<h3>3.1 Alta</h3>
+<ul><li>Crear una cuenta o correo electrónico institucional.</li><li>Proporcionar una contraseña inicial de la empresa e indicar que debe mantenerse segura.</li><li>Firmar el contrato y el compromiso de confidencialidad.</li><li>Asignar acceso al sistema de la empresa según el puesto de trabajo.</li><li>Entregar el equipo proporcionado por la empresa para fines laborales.</li></ul>
+<h3>3.2 Baja</h3>
+<ul><li>Bloqueo inmediato de su cuenta o correo institucional.</li><li>Bloqueo del acceso al sistema de la empresa.</li><li>Bloqueo de los permisos y privilegios que tenía concedidos.</li><li>Devolución de los equipos que la empresa le proporcionó para uso laboral.</li></ul>
+</section>
+
+<section class="pagebreak">
+<h2>4. Normas de usuario</h2>
+<ol><li>Revalidar anualmente los usuarios y grupos dentro del sistema.</li><li>Asignar permisos y privilegios teniendo en cuenta las necesidades operativas de cada usuario y su puesto de trabajo.</li><li>Registrar las modificaciones de permisos cuando cambien las funciones de un empleado.</li><li>Detectar actividades no autorizadas, como conexiones en horas extrañas o desde equipos no contemplados inicialmente.</li><li>Detectar y bloquear las cuentas inactivas.</li></ol>
+
+<h2>5. Concienciación</h2>
+<table><tr><th>Actividad</th><th>Diseño propuesto</th><th>Indicador</th></tr>
+<tr><td>Charla anual</td><td>Con base en la página 83, apartado 2.4.4, proponemos una charla una vez al año para todos los empleados. Se explicará el uso correcto de contraseñas, protección de la información, correos sospechosos, phishing, uso seguro de USB y qué hacer ante un incidente.</td><td>Lista de asistencia y preguntas breves al finalizar.</td></tr>
+<tr><td>Simulacro de phishing</td><td>Enviar un correo falso que simule un intento de phishing. Se observará si los empleados identifican enlaces desconocidos, solicitudes de contraseñas o mensajes que generen urgencia.</td><td>Al finalizar se informarán los resultados y se reforzarán las medidas con quienes tengan dificultades.</td></tr>
+</table>
+<p>El objetivo de estas actividades es ayudar a los empleados a reconocer riesgos, no sancionarlos de forma automática.</p>
+
+<h2>6. Compras y proveedores</h2>
+<h3>Requisitos propuestos</h3>
+<ul><li>Evaluación de proveedores y del nivel de servicio ofrecido.</li><li>Análisis comparativo de las ofertas antes de realizar una compra.</li><li>Instalación y configuración correcta de los productos adquiridos.</li><li>Formación y soporte para los usuarios y el personal técnico.</li><li>Soporte y mantenimiento postventa.</li><li>Actualización de productos mediante nuevas versiones y parches de seguridad.</li></ul>
+<h3>Relación con proveedores externos</h3>
+<p>Los puntos anteriores fueron tomados como referencia de los requisitos de las páginas 83 y 84 del libro. Al contratar proveedores externos también se debe solicitar confidencialidad y limitar su acceso a las áreas o sistemas que necesiten para prestar el servicio.</p>
+
+<h2 class="section-break">7. Seguridad física y electricidad</h2>
+<h3>Control de acceso</h3>
+<p>La oficina usará credenciales personales para empleados y registro de visitantes con identificación, motivo y acompañante. El cuarto de servidores tendrá acceso con tarjeta individual o biometría, registro de eventos, cámara y autorización limitada a TI. Las llaves de emergencia se custodiarán en un gabinete controlado; se revisarán permisos mensualmente y al ocurrir una baja.</p>
+<h3>Protección ante cortes de energía</h3>
+<p>Los servidores, equipos de red, firewall y almacenamiento se conectarán a un <b>SAI/UPS</b> dimensionado para permitir un apagado controlado de al menos 20–30 minutos. El UPS deberá incluir supresión de picos, monitoreo de batería y pruebas semestrales. Para interrupciones prolongadas se documentará el apagado ordenado, se verificarán respaldos y se considerará un generador para los servicios críticos.</p>
+
+<h2>Conclusión y fuente consultada</h2>
+<p>La dirección nombrará a un responsable de seguridad para mantener el inventario, revisar altas y bajas y coordinar las capacitaciones. Esta propuesta se revisará cada año o cuando ocurra un incidente importante.</p>
+<p><b>Fuente consultada:</b> Gómez Vieites, Álvaro. <i>Enciclopedia de la Seguridad Informática</i>, segunda edición. Capítulo 2: Políticas, planes y procedimientos de seguridad; especialmente pp. 83–84.</p>
+<p class="footer">DataSecure Global, S.A. · Informe técnico de seguridad · Organización, Personas y Oficinas</p>
+</section>
+</body></html>
