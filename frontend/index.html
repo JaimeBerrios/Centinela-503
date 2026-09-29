@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07151e">
+  <meta name="description" content="Centinela 503 · Centro local de coordinación de alertas comunitarias.">
+  <title>Centinela 503 · Centro de operaciones</title>
+  <link rel="stylesheet" href="css/styles.css?v=20260928-2">
+</head>
+<body>
+  <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.8 20h18.4L12 3Z"/><path d="M12 9v4m0 3h.01"/></symbol>
+    <symbol id="i-radio" viewBox="0 0 24 24"><path d="M5 8a10 10 0 0 1 14 0M8 11a6 6 0 0 1 8 0m-5 3a2 2 0 0 1 2 0M12 17v4m-3 0h6"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6-7.8a4 4 0 0 1 0 7.6m2 4.2a4 4 0 0 1 3 3.9V21"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-crosshair" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M12 9v6m-3-3h6"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9a7 7 0 0 1 11.7-2L20 12M4 12l2.7 5a7 7 0 0 0 11.7-2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-3 8h7L8 22l3-9H5l8-11Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </svg>
+  <div class="auth-screen" id="auth-screen">
+    <div class="auth-grid"></div><div class="auth-orbit orbit-one"></div><div class="auth-orbit orbit-two"></div>
+    <section class="auth-card">
+      <a class="brand auth-brand" href="#inicio"><span class="brand-mark"><span class="brand-mark-core"></span><span class="brand-mark-orbit"></span></span><span class="brand-copy"><strong>centinela<span>503</span></strong><small>RESPUESTA COMUNITARIA</small></span></a>
+      <div class="auth-kicker"><span class="section-kicker-dot"></span> SERVIDOR LOCAL · SAN MIGUEL</div>
+      <h1 id="auth-title">Centro de coordinación</h1><p id="auth-subtitle">Inicia sesión para acceder a la plataforma de respuesta.</p>
+      <form id="login-form"><label for="login-username">Usuario</label><input id="login-username" name="username" autocomplete="username" required placeholder="Tu usuario"><label for="login-password">Contraseña</label><input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="Tu contraseña"><div class="auth-error" id="auth-error"></div><button class="primary-button auth-submit" type="submit" id="auth-submit">Entrar al centro local <svg><use href="#i-arrow"/></svg></button></form>
+      <form id="setup-form" hidden><label for="setup-name">Nombre del administrador</label><input id="setup-name" name="full_name" required minlength="2" maxlength="120" placeholder="Nombre y apellido"><label for="setup-username">Usuario</label><input id="setup-username" name="username" required minlength="3" maxlength="40" pattern="[A-Za-z0-9._-]+" placeholder="Ej. coordinacion"><label for="setup-password">Contraseña segura</label><input id="setup-password" name="password" type="password" required minlength="10" maxlength="128" placeholder="Mínimo 10 caracteres"><div class="auth-error" id="setup-error"></div><button class="primary-button auth-submit" type="submit">Crear administrador local <svg><use href="#i-arrow"/></svg></button></form>
+      <div class="auth-security"><svg><use href="#i-shield"/></svg> Sesión almacenada solo en este navegador <span>·</span> Datos en el servidor local</div>
+      <div class="auth-footer">CENTINELA 503 <span>·</span> PILOTO ACADÉMICO 2026</div>
+    </section>
+  </div>
+  <div class="app-shell" id="app-shell" hidden>
+    <aside class="sidebar">
+      <a class="brand" href="#inicio" aria-label="Centinela 503 inicio">
+        <span class="brand-mark"><span class="brand-mark-core"></span><span class="brand-mark-orbit"></span></span>
+        <span class="brand-copy"><strong>centinela<span>503</span></strong><small>RESPUESTA COMUNITARIA</small></span>
+      </a>
+      <div class="workspace-label">CENTRO DE OPERACIONES <span class="live-pip"></span></div>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a class="nav-link active" href="#inicio" data-view="overview"><svg><use href="#i-grid"/></svg> Vista general <span class="nav-count">01</span></a>
+        <a class="nav-link" href="#incidentes" data-view="incidents"><svg><use href="#i-alert"/></svg> Incidentes <span class="nav-badge" id="nav-alert-count">—</span></a>
+        <a class="nav-link" href="#red" data-view="overview"><svg><use href="#i-radio"/></svg> Red de nodos</a>
+        <a class="nav-link" href="#brigadas" data-view="brigades" data-roles="admin,coordinator,brigade_operator"><svg><use href="#i-people"/></svg> Brigadas</a>
+        <a class="nav-link" href="#asignaciones" data-view="assignments" data-roles="admin,coordinator,brigade_operator"><svg><use href="#i-send"/></svg> Asignaciones</a>
+        <a class="nav-link" href="#decisiones" data-view="decisions" data-roles="admin,coordinator"><svg><use href="#i-clock"/></svg> Decisiones</a>
+      </nav>
+      <div class="sidebar-rule"></div>
+      <div class="workspace-label">SISTEMA</div>
+      <nav class="main-nav" aria-label="Estado del sistema">
+        <a class="nav-link" href="#usuarios" data-view="users" data-roles="admin"><svg><use href="#i-people"/></svg> Usuarios y roles</a>
+        <a class="nav-link" href="#politicas" data-view="policies" data-roles="admin"><svg><use href="#i-shield"/></svg> Políticas locales</a>
+        <a class="nav-link" href="#auditoria" data-view="audit" data-roles="admin"><svg><use href="#i-clock"/></svg> Bitácora de auditoría</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="field-card">
+          <div class="field-card-top"><span class="field-dot"></span> MODO DE OPERACIÓN</div>
+          <strong>Infraestructura local</strong>
+          <p>La coordinación permanece dentro de la red del piloto.</p>
+          <div class="field-card-footer"><svg><use href="#i-shield"/></svg> SIN DEPENDENCIA DE NUBE</div>
+        </div>
+        <div class="profile-row"><div class="profile-avatar" id="profile-initials">CE</div><div class="profile-copy"><strong id="profile-name">Coordinación</strong><small id="profile-role">Centro de emergencia</small></div><button class="profile-menu" id="sidebar-logout" title="Cerrar sesión">↗</button></div>
+        <div class="sidebar-footnote">CENTINELA 503 <span>·</span> PILOTO SAN MIGUEL</div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="inicio">
+      <header class="topbar">
+        <div class="breadcrumb"><span>OPERACIONES</span><svg><use href="#i-chevron"/></svg><strong>Vista general</strong></div>
+        <div class="topbar-right">
+          <div class="connection-pill" id="connection-pill"><span class="connection-dot"></span><span id="connection-label">CONECTANDO API</span></div>
+          <span class="topbar-divider"></span>
+          <div class="clock-block"><span id="clock-time">--:--:--</span><small id="clock-date">SAN MIGUEL, SV</small></div>
+          <button class="icon-button" id="refresh-button" aria-label="Actualizar datos" title="Actualizar ahora"><svg><use href="#i-refresh"/></svg></button>
+          <button class="avatar-button" id="topbar-logout" aria-label="Cerrar sesión" title="Cerrar sesión">C</button>
+        </div>
+      </header>
+
+      <div class="page-wrap" id="overview-view">
+        <section class="welcome-row">
+          <div><div class="eyebrow"><span class="eyebrow-line"></span> TABLERO TÁCTICO <span class="eyebrow-date" id="header-date">—</span></div><h1>Centro de <span>respuesta</span></h1><p class="welcome-subtitle">Lectura operativa del piloto · Distrito de San Miguel</p></div>
+          <button class="primary-button report-action" id="open-report"><svg><use href="#i-plus"/></svg> Registrar alerta <span class="button-shortcut">N</span></button>
+        </section>
+
+        <section class="metrics-grid" aria-label="Indicadores del piloto">
+          <article class="metric-card metric-highlight"><div class="metric-top"><span class="metric-label">ALERTAS REGISTRADAS</span><span class="metric-icon icon-cyan"><svg><use href="#i-alert"/></svg></span></div><div class="metric-number" id="metric-alerts">—</div><div class="metric-foot"><span class="metric-live"><span></span> TOTAL LOCAL</span><span class="metric-foot-note">en el servidor</span></div><div class="metric-spark spark-cyan"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-label">PRIORIDAD ALTA SUGERIDA</span><span class="metric-icon icon-amber"><svg><use href="#i-bolt"/></svg></span></div><div class="metric-number" id="metric-high">—</div><div class="metric-foot"><span class="metric-live amber-live"><span></span> PENDIENTE DE VALIDACIÓN</span><span class="metric-foot-note">reglas locales</span></div><div class="metric-spark spark-amber"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-label">PUNTOS DE ALERTA</span><span class="metric-icon icon-green"><svg><use href="#i-pin"/></svg></span></div><div class="metric-number" id="metric-clusters">—</div><div class="metric-foot"><span class="metric-live green-live"><span></span> AGRUPACIÓN ESPACIAL</span><span class="metric-foot-note">radio 50 m</span></div><div class="metric-spark spark-green"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-label">NODOS CON REPORTE</span><span class="metric-icon icon-blue"><svg><use href="#i-radio"/></svg></span></div><div class="metric-number" id="metric-nodes">—<small> / 2</small></div><div class="metric-foot"><span class="metric-live blue-live"><span></span> ÚLTIMOS 2 MIN</span><span class="metric-foot-note">piloto físico</span></div><div class="metric-spark spark-blue"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+        </section>
+
+        <section class="operations-grid">
+          <article class="panel map-panel">
+            <div class="panel-header map-header"><div><div class="section-kicker"><span class="section-kicker-dot"></span> GEOVIGILANCIA <span class="kicker-divider">/</span> EN VIVO</div><h2>Mapa de incidentes</h2></div><div class="map-controls"><span class="map-layer-label"><span></span> ZONA DE PRUEBA</span><button class="map-control" id="locate-button" title="Centrar mapa"><svg><use href="#i-crosshair"/></svg></button></div></div>
+            <div class="map-viewport" id="map-viewport" aria-label="Mapa táctico del piloto en San Miguel">
+              <svg class="map-art" viewBox="0 0 900 430" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Mapa esquemático de San Miguel">
+                <defs><pattern id="map-grid" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M42 0H0V42" fill="none" stroke="#18303a" stroke-width=".7"/></pattern><pattern id="map-dots" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".65" fill="#31505a" opacity=".5"/></pattern><radialGradient id="map-glow"><stop stop-color="#00d2bb" stop-opacity=".12"/><stop offset="1" stop-color="#00d2bb" stop-opacity="0"/></radialGradient><linearGradient id="river" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#113d4b"/><stop offset="1" stop-color="#102b39"/></linearGradient></defs>
+                <rect width="900" height="430" fill="#0b1c26"/><rect width="900" height="430" fill="url(#map-grid)"/><rect width="900" height="430" fill="url(#map-dots)"/>
+                <path d="M-20 301C120 276 163 333 268 293S425 214 510 250s141 96 244 35 121-72 178-62v219H-20Z" fill="#102831" opacity=".78"/>
+                <path d="M-20 302C120 277 163 334 268 294s157-79 242-43 141 96 244 35 121-72 178-62" fill="none" stroke="#29454b" stroke-width="1" stroke-dasharray="3 7"/>
+                <path d="M66 441C111 329 167 318 201 234S227 95 309-8M209 445c22-73 74-115 98-191s15-171 110-276M598 445c-27-91-61-115-47-195s58-140 53-257M795 445c-65-95-87-171-65-249S803 80 849-12" fill="none" stroke="#23343b" stroke-width="11"/><path d="M66 441C111 329 167 318 201 234S227 95 309-8M209 445c22-73 74-115 98-191s15-171 110-276M598 445c-27-91-61-115-47-195s58-140 53-257M795 445c-65-95-87-171-65-249S803 80 849-12" fill="none" stroke="#43545a" stroke-width="1" stroke-dasharray="5 8"/>
+                <path d="M0 100 900 314M0 156 900 67M47 430 565 0M421 430 887 66M-3 361 702 15" fill="none" stroke="#1e3038" stroke-width="5"/><path d="M0 100 900 314M0 156 900 67M47 430 565 0M421 430 887 66M-3 361 702 15" fill="none" stroke="#3a4a50" stroke-width=".8" stroke-dasharray="4 8"/>
+                <g fill="#1a3037" stroke="#2b4147" stroke-width=".8"><path d="m91 130 65 11-13 46-67-13z"/><path d="m235 172 76-18 24 50-79 16z"/><path d="m359 78 65 14-8 48-78-7z"/><path d="m516 130 90-14 17 43-94 20z"/><path d="m677 203 75-30 28 50-83 31z"/><path d="m142 286 70-18 14 48-64 23z"/><path d="m363 298 79-26 25 44-83 24z"/><path d="m535 313 65-19 18 47-67 21z"/></g>
+                <g fill="#577078" font-family="DM Mono,monospace" font-size="10" letter-spacing="1.5"><text x="66" y="72">COL. CIUDAD PACÍFICA</text><text x="353" y="53">CENTRO HISTÓRICO</text><text x="652" y="112">COL. MILAGRO DE LA PAZ</text><text x="94" y="392">SAN MIGUEL · EL SALVADOR</text><text x="694" y="390">13.4833° N · 88.1833° O</text></g>
+                <g transform="translate(461 188)"><circle r="90" fill="url(#map-glow)"/><circle r="43" fill="none" stroke="#00d2bb" stroke-width="1" stroke-dasharray="2 6" opacity=".55"/><circle r="24" fill="none" stroke="#00d2bb" stroke-width="1" opacity=".36"/><circle r="5" fill="#5df5dd"/><circle r="10" fill="none" stroke="#5df5dd" stroke-width="1.2"/><path d="M0-17v-7m0 48v7m-17-27h-7m48 0h7" stroke="#5df5dd" stroke-width="1" opacity=".65"/></g>
+                <g id="map-markers"></g>
+                <g transform="translate(24 23)" opacity=".7"><path d="M0 30V0h30M0 11h11V0" fill="none" stroke="#85a5a9" stroke-width="1"/><path d="M0 30V0h30" fill="none" stroke="#0ad9bc" stroke-width="2"/></g>
+              </svg>
+              <div class="map-north">N <span>↑</span></div>
+              <div class="map-legend"><span><i class="legend-dot legend-high"></i> PRIORIDAD ALTA</span><span><i class="legend-dot legend-mid"></i> EN REVISIÓN</span><span><i class="legend-ring"></i> NODO BASE</span></div>
+              <div class="map-zoom"><button aria-label="Acercar" id="zoom-in">+</button><button aria-label="Alejar" id="zoom-out">−</button><span></span><button class="report-action" aria-label="Seleccionar ubicación" id="map-pick"><svg><use href="#i-pin"/></svg></button></div>
+              <div class="map-hint" id="map-hint">SELECCIONA <span>+ REGISTRAR ALERTA</span> PARA UBICAR UN INCIDENTE</div>
+              <div class="map-toast" id="map-toast"><svg><use href="#i-pin"/></svg> <span>Ubicación seleccionada</span></div>
+            </div>
+            <div class="map-footer"><span><i class="map-footer-pip"></i> MAPA LOCAL DEL PILOTO</span><span id="map-count">Sin alertas sincronizadas</span><button class="report-action" id="open-map-report">+ MARCAR INCIDENTE</button></div>
+          </article>
+
+          <article class="panel incidents-panel" id="alertas">
+            <div class="panel-header incidents-heading"><div><div class="section-kicker"><span class="section-kicker-dot amber-dot"></span> TRIAGE LOCAL</div><h2>Alertas recientes <span class="heading-count" id="recent-count">0</span></h2></div><button class="text-button" id="view-all">VER TODAS <svg><use href="#i-arrow"/></svg></button></div>
+            <div class="incident-filters" role="group" aria-label="Filtrar alertas"><button class="filter-chip selected" data-filter="all">Todas <span id="filter-all-count">0</span></button><button class="filter-chip" data-filter="Alta">Alta <span id="filter-high-count">0</span></button><button class="filter-chip" data-filter="Pendiente">Pendiente <span id="filter-pending-count">0</span></button></div>
+            <div class="incident-list" id="incident-list" aria-live="polite"></div>
+            <button class="all-incidents-button" id="show-all-button">Explorar registro completo <svg><use href="#i-arrow"/></svg></button>
+          </article>
+        </section>
+
+        <section class="bottom-grid">
+          <article class="panel network-panel" id="red"><div class="panel-header"><div><div class="section-kicker"><span class="section-kicker-dot blue-dot"></span> COMUNICACIÓN LORA</div><h2>Actividad de nodos</h2></div><span class="pilot-tag">PILOTO · 2 NODOS</span></div><div class="node-list" id="node-list"></div><div class="network-foot"><svg><use href="#i-shield"/></svg> El servidor recibe datos en la red local <span>·</span> Sin nube</div></article>
+          <article class="panel activity-panel" id="actividad"><div class="panel-header"><div><div class="section-kicker"><span class="section-kicker-dot green-dot"></span> TRAZABILIDAD</div><h2>Actividad reciente</h2></div><button class="quiet-button" id="activity-refresh" title="Actualizar actividad"><svg><use href="#i-refresh"/></svg></button></div><div class="activity-list" id="activity-list"></div></article>
+          <article class="panel readiness-panel" id="brigadas"><div class="panel-header"><div><div class="section-kicker"><span class="section-kicker-dot"></span> CAPACIDAD DE RESPUESTA</div><h2>Estado del piloto</h2></div><span class="readiness-icon"><svg><use href="#i-shield"/></svg></span></div><div class="readiness-score"><div><strong>POC</strong><span>Entorno controlado</span></div><span class="readiness-badge"><i></i> EN VALIDACIÓN</span></div><div class="readiness-divider"></div><div class="readiness-row"><span>Persistencia local</span><strong><i class="ready-check"><svg><use href="#i-check"/></svg></i> ACTIVA</strong></div><div class="readiness-row"><span>Sugerencia por reglas locales</span><strong id="ml-readiness"><i class="ready-pending">!</i> POR VERIFICAR</strong></div><div class="readiness-row"><span>Gestión de brigadas</span><strong class="ready-check"><svg><use href="#i-check"/></svg> INTEGRADA</strong></div><div class="readiness-note"><span>i</span> Las sugerencias requieren validación humana. No sustituyen un modelo NLP entrenado ni una ruta vial.</div></article>
+        </section>
+        <footer class="page-footer"><span>© CENTINELA 503 <i>·</i> PILOTO ACADÉMICO</span><span><i class="footer-lock"></i> DATOS ALMACENADOS LOCALMENTE</span><span>BUILD 0.2.0 <b>●</b></span></footer>
+      </div>
+      <section class="management-view" id="management-view" hidden>
+        <div class="page-wrap"><div class="management-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> ADMINISTRACIÓN OPERATIVA</div><h1 id="management-title">Incidentes</h1><p id="management-subtitle">Gestión local del piloto Centinela 503.</p></div><button class="primary-button" id="management-action"><svg><use href="#i-plus"/></svg><span>Nuevo registro</span></button></div><div id="management-content"></div></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="report-modal" aria-hidden="true">
+    <section class="report-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-topline"><span class="modal-icon"><svg><use href="#i-alert"/></svg></span><button class="modal-close" id="close-report" aria-label="Cerrar"><svg><use href="#i-x"/></svg></button></div>
+      <div class="section-kicker"><span class="section-kicker-dot amber-dot"></span> REGISTRO CIUDADANO</div><h2 id="modal-title">Nueva alerta</h2><p class="modal-intro">El reporte quedará guardado en el servidor local para su revisión por coordinación.</p>
+      <form id="report-form">
+        <label for="incident-text">¿Qué está ocurriendo?<span class="field-required">*</span></label><textarea id="incident-text" name="incident_text" maxlength="500" minlength="4" required placeholder="Ej. Calle inundada cerca del mercado municipal…"></textarea><div class="field-meta"><span>Describe lo observado con claridad</span><span id="char-count">0 / 500</span></div>
+        <div class="form-two"><div><label for="incident-type">Tipo de alerta</label><select id="incident-type" name="status"><option value="Emergencia">Emergencia</option><option value="Normal">Reporte informativo</option></select></div><div><label for="node-id">Estación de origen</label><select id="node-id" name="node_id"><option value="0">Dashboard local</option><option value="1">Nodo 01 · Base</option><option value="2">Nodo 02 · Campo</option></select></div></div>
+        <div class="form-location"><div class="location-icon"><svg><use href="#i-pin"/></svg></div><div><strong>Ubicación del incidente</strong><small id="selected-coordinates">San Miguel · ubicación aproximada del piloto</small></div><button type="button" id="choose-location">SELECCIONAR EN MAPA</button></div>
+        <input type="hidden" id="incident-lat" name="latitude" value="13.4833"><input type="hidden" id="incident-lon" name="longitude" value="-88.1833">
+        <div class="modal-error" id="form-error" role="alert"></div>
+        <button class="primary-button submit-button" type="submit" id="submit-report"><svg><use href="#i-send"/></svg> Enviar alerta al servidor local <span class="submit-arrow"><svg><use href="#i-arrow"/></svg></span></button>
+        <div class="modal-secure"><svg><use href="#i-shield"/></svg> CONEXIÓN LOCAL <span>·</span> LA PRIORIDAD SE VALIDA EN COORDINACIÓN</div>
+      </form>
+    </section>
+  </div>
+  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+  <script src="js/api.js?v=20260928-3"></script>
+  <script src="js/map.js?v=20260928-3"></script>
+  <script src="js/app.js?v=20260928-3"></script>
+  <script src="js/product.js?v=20260928-3"></script>
+</body>
+</html>

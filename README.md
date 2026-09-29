@@ -2,21 +2,22 @@
 
 Centinela-503 es un proyecto orientado a la adquisición, procesamiento y análisis de datos provenientes de nodos ESP32/LoRa conectados mediante USB a un servidor local. 
 
-El **Backend Core** actúa como el núcleo de procesamiento, inteligencia artificial y gestión de base de datos. Está construido con una arquitectura limpia, orientada a eventos y aplicando principios DevSecOps.
+El piloto integra una API local, SQLite, interfaz de coordinación y recepción serial. El sistema está diseñado para mantener la operación dentro de la red local.
 
 ## 🚀 Características Principales
 
-* **Recepción Asíncrona (PySerial):** Monitor en segundo plano que escucha los datos de los nodos ESP32/LoRa sin bloquear la API principal. Incluye modo simulador automático si no detecta hardware.
-* **Agente de Triaje con IA (Scikit-learn):** Implementación de un modelo de Machine Learning (*Decision Tree Classifier*) que evalúa las alertas entrantes en tiempo real para asignar su nivel de prioridad (Alta/Baja) antes de almacenarlas.
-* **Agrupación Espacial (Haversine):** Algoritmo matemático que procesa las coordenadas GPS de las alertas y las agrupa en "clústeres" si ocurren a menos de 50 metros de distancia, optimizando la carga de datos para el mapa del frontend.
-* **Trazabilidad DevSecOps:** Integración nativa con Azure Boards para el seguimiento automatizado de tareas mediante etiquetas `AB#`.
+* **Recepción local por serial:** El monitor PySerial no bloquea la API. El simulador se puede desactivar desde las políticas institucionales.
+* **Triaje explicable:** Reglas locales en español sugieren categoría y prioridad. Coordinación debe validar cada prioridad antes de asignar recursos. Es una línea base; no se presenta como un modelo NLP entrenado.
+* **Agrupación espacio-temporal:** Haversine combina proximidad geográfica y un intervalo temporal para reducir reportes duplicados en el mapa local.
+* **Control de acceso por rol:** Administrador, Coordinador, Operador de Brigada y Reportante tienen permisos distintos. La cuenta inicial se configura en el primer acceso.
+* **Despacho y trazabilidad:** Asignaciones, cambios de estado y decisiones quedan registrados en SQLite; las acciones administrativas se reflejan en una bitácora.
 
 ## 🛠️ Stack Tecnológico
 
 - **Framework Web:** FastAPI (con Uvicorn)
 - **Lenguaje / Entorno:** Python 3
 - **Base de Datos:** SQLite (Patrón Repositorio)
-- **Machine Learning:** Scikit-learn, Numpy
+- **Triaje:** Reglas locales explicables; el entrenamiento de un modelo supervisado requiere un conjunto de datos validado.
 - **Hardware Interfacing:** PySerial, ESP32
 - **Sistema Operativo (Recomendado):** Linux Fedora
 - **Control de Versiones:** Git
@@ -34,7 +35,7 @@ ESP32 / Nodos LoRa
  Serial Service ───────► SQLite
        │
        ▼
- Agente IA (ML)
+ Sugerencia local
        │
        ▼
     FastAPI
@@ -71,7 +72,7 @@ Centinela-503/
 
 ## ⚙️ Guía de Instalación (Para QA y Frontend)
 
-Sigue estos pasos para levantar el servidor localmente con datos simulados o con hardware real.
+Sigue estos pasos para levantar el servidor localmente con el simulador o con hardware real.
 
 ### 1. Clonar el repositorio
 ```bash
@@ -104,7 +105,21 @@ pip install -r requirements.txt
 ```bash
 uvicorn app.main:app --reload
 ```
-> **Nota:** Al iniciar, el sistema creará la base de datos automáticamente e iniciará el simulador de nodos. Verás los registros de GPS e IA en la terminal.
+> **Nota:** En el primer inicio se crea SQLite. Si no se encuentra el puerto serial, el simulador local genera reportes cada 10 segundos, siempre que esa política esté habilitada.
+
+### 5. Abrir el dashboard local
+
+En otra terminal, vuelve a la raíz `Centinela-503` y sirve el directorio frontend:
+
+```bash
+python -m http.server 5500 --directory frontend
+```
+
+Abre `http://127.0.0.1:5500`. El dashboard consulta `GET /sensors/` y envía reportes a `POST /sensors/`; puedes verificar la API en `http://127.0.0.1:8000/docs`. La URL predeterminada del servidor es `http://127.0.0.1:8000`. CORS permite previews de desarrollo servidos desde `localhost`, `127.0.0.1` o `::1`. Para otra dirección de API, agrega `?api=http://DIRECCION:PUERTO` a la URL del dashboard.
+
+En el primer acceso, crea la cuenta de Administrador Institucional con contraseña de al menos 10 caracteres. Después crea brigadas, coordinadores, operadores y reportantes desde **Usuarios y roles**. Asocia primero una brigada para dar de alta a un Operador de Brigada.
+
+La interfaz muestra una vista previa ilustrativa solo cuando no hay sesión/API; esa vista previa no se guarda ni se envía como información real. El mapa esquemático, estilos e iconos están incluidos localmente.
 
 ## 🔌 Comunicación Serial (Hardware Real)
 Si conectas un ESP32 real, será detectado normalmente como `/dev/ttyUSB0` o `/dev/ttyACM0`.
@@ -115,9 +130,15 @@ sudo usermod -a -G dialout $USER
 ```
 *No se debe ejecutar el backend como root para acceder al ESP32.*
 
-## 📡 Endpoints Principales
+## 📡 Endpoints principales
 
 Puedes probar la API directamente desde la documentación interactiva (Swagger) generada automáticamente ingresando a [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) en tu navegador una vez levantado el servidor.
 
-- **`GET /sensors/`**
-  Retorna el historial de alertas procesado por el algoritmo espacial. Devuelve un JSON estructurado en clústeres listos para ser consumidos y dibujados en mapas (ej. Leaflet).
+- **`POST /auth/setup`**, **`POST /auth/login`**, **`GET /auth/me`**, **`POST /auth/logout`**: configuración del primer administrador y sesiones locales.
+- **`GET /sensors/`**, **`POST /sensors/`**: mapa agrupado y registro de reportes.
+- **`GET /incidents`**, **`PATCH /incidents/{id}`**: bandeja, validación y cierre de alertas.
+- **`GET/POST /brigades/`**, **`PATCH /brigades/{id}`**: administración y disponibilidad.
+- **`GET/POST /assignments`**, **`PATCH /assignments/{id}`**: asignación y seguimiento de atención.
+- **`GET/POST /decisions`**, **`GET/PATCH /policies`**, **`GET /audit`**, **`GET /users/`**: decisiones, políticas, auditoría y cuentas según rol.
+
+Las rutas completas y sus permisos están descritos en [`docs/api.md`](docs/api.md). Los endpoints requieren token local salvo estado, configuración inicial y login.

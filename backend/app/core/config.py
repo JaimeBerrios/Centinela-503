@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class Settings(BaseModel):
     PROJECT_NAME: str = "Centinela 503 API"
-    VERSION: str = "0.1.0"
+    VERSION: str = "1.0.0"
     
     # Configuración Serial
     SERIAL_PORT: str = os.getenv("SERIAL_PORT", "/dev/ttyUSB0")
