@@ -9,9 +9,10 @@
   function coords(latitude, longitude) {
     const lat = Number(latitude);
     const lon = Number(longitude);
+    if (lat < minLat || lat > maxLat || lon < minLon || lon > maxLon) return null;
     return {
-      x: 48 + Math.max(0, Math.min(1, (lon - minLon) / (maxLon - minLon))) * 804,
-      y: 34 + (1 - Math.max(0, Math.min(1, (lat - minLat) / (maxLat - minLat)))) * 350,
+      x: 48 + ((lon - minLon) / (maxLon - minLon)) * 804,
+      y: 34 + (1 - ((lat - minLat) / (maxLat - minLat))) * 350,
     };
   }
 
@@ -23,6 +24,7 @@
       const y = Number(cluster.center_latitude);
       if (!Number.isFinite(x) || !Number.isFinite(y)) return;
       const p = coords(y, x);
+      if (!p) return;
       const alerts = cluster.alerts || [];
       const isHigh = cluster.cluster_priority === 'Alta' || alerts.some((a) => a.priority === 'Alta');
       const group = document.createElementNS(NS, 'g');
@@ -54,8 +56,13 @@
   viewport.addEventListener('click', (event) => {
     if (!selecting || event.target.closest('.map-zoom, .map-marker')) return;
     const rect = viewport.getBoundingClientRect();
-    const viewX = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-    const viewY = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const offsetX = (event.clientX - rect.left - centerX) / scale + centerX;
+    const offsetY = (event.clientY - rect.top - centerY) / scale + centerY;
+    
+    const viewX = Math.max(0, Math.min(1, offsetX / rect.width));
+    const viewY = Math.max(0, Math.min(1, offsetY / rect.height));
     const longitude = minLon + viewX * (maxLon - minLon);
     const latitude = maxLat - viewY * (maxLat - minLat);
     setSelecting(false);

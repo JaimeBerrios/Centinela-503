@@ -123,7 +123,7 @@
   function renderConnection() {
     const pill = $('#connection-pill');
     pill.classList.toggle('offline', !state.connected);
-    $('#connection-label').textContent = state.connected ? 'API LOCAL EN LÍNEA' : 'API SIN CONEXIÓN';
+    $('#connection-label').textContent = state.connected ? 'API LOCAL EN LÍNEA' : (state.lastSync ? `SIN CONEXIÓN · ÚLTIMA ACT: ${state.lastSync.toLocaleTimeString('es-SV')}` : 'API SIN CONEXIÓN');
     $('#map-hint').innerHTML = state.demo ? 'MODO <span>DEMO · DATOS ILUSTRATIVOS</span>' : 'MAPA <span>LOCAL · SAN MIGUEL</span>';
   }
 
@@ -153,10 +153,7 @@
       state.lastSync = new Date();
     } catch (error) {
       state.connected = false;
-      state.demo = true;
-      state.alerts = sampleAlerts;
-      state.clusters = clustersFromAlerts(sampleAlerts);
-      if (error?.name !== 'AbortError' && error?.name !== 'TimeoutError') console.info('Usando vista previa; API local no disponible.');
+      if (error?.name !== 'AbortError' && error?.name !== 'TimeoutError') console.error('Conexión perdida. Mostrando última información local válida.');
     }
     render();
   }
@@ -267,3 +264,4 @@
   sync();
   window.setInterval(sync, 12000);
 })();
+

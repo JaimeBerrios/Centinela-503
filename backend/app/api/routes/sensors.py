@@ -56,3 +56,49 @@ async def get_sensors(user=Depends(require_roles("admin", "coordinator", "brigad
         "total_clusters": len(grouped_clusters),
         "data": grouped_clusters
     }
+
+from fastapi.responses import StreamingResponse
+import io
+import csv
+from datetime import datetime
+
+@router.get("/export")
+async def export_incidents_csv(user=Depends(require_roles("admin", "coordinator"))):
+    """Exporta las emergencias a un archivo CSV para análisis histórico."""
+    records = database.get_all_sensors_data()
+    
+    # Crear un buffer en memoria
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    # Escribir cabeceras
+    writer.writerow([
+        "ID", "Fecha/Hora (UTC)", "Nodo Hardware", "Estado Inicial", "Texto del Incidente",
+        "Latitud", "Longitud", "Categoría (IA)", "Prioridad (IA)",
+        "Estado del Triaje", "Estado de Resolución"
+    ])
+    
+    # Escribir datos
+    for row in records:
+        writer.writerow([
+            row.get("id"),
+            row.get("timestamp"),
+            row.get("node_id"),
+            row.get("status"),
+            row.get("incident_text"),
+            row.get("latitude"),
+            row.get("longitude"),
+            row.get("category"),
+            row.get("suggested_priority"),
+            row.get("triage_state"),
+            row.get("resolution_status")
+        ])
+        
+    output.seek(0)
+    
+    filename = f"reporte_emergencias_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    headers = {
+        "Content-Disposition": f"attachment; filename={filename}"
+    }
+    
+    return StreamingResponse(output, media_type="text/csv", headers=headers)

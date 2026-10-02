@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07151e">
   <meta name="description" content="Centinela 503 · Centro local de coordinación de alertas comunitarias.">
+    <link rel="icon" type="image/svg+xml" href="assets/img/lsotipo-centinela.svg">
   <title>Centinela 503 · Centro de operaciones</title>
   <link rel="stylesheet" href="css/styles.css?v=20260928-2">
 </head>
@@ -31,7 +32,7 @@
   <div class="auth-screen" id="auth-screen">
     <div class="auth-grid"></div><div class="auth-orbit orbit-one"></div><div class="auth-orbit orbit-two"></div>
     <section class="auth-card">
-      <a class="brand auth-brand" href="#inicio"><span class="brand-mark"><span class="brand-mark-core"></span><span class="brand-mark-orbit"></span></span><span class="brand-copy"><strong>centinela<span>503</span></strong><small>RESPUESTA COMUNITARIA</small></span></a>
+      <a class="brand auth-brand" href="#inicio" style="display: block; padding-bottom: 24px;"><span class="brand-copy" style="gap: 8px;"><img src="assets/img/lmagotipo-centinela.svg" alt="Centinela 503" style="width: 100%; height: auto; object-fit: contain; object-position: left;"><small>RESPUESTA COMUNITARIA</small></span></a>
       <div class="auth-kicker"><span class="section-kicker-dot"></span> SERVIDOR LOCAL · SAN MIGUEL</div>
       <h1 id="auth-title">Centro de coordinación</h1><p id="auth-subtitle">Inicia sesión para acceder a la plataforma de respuesta.</p>
       <form id="login-form"><label for="login-username">Usuario</label><input id="login-username" name="username" autocomplete="username" required placeholder="Tu usuario"><label for="login-password">Contraseña</label><input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="Tu contraseña"><div class="auth-error" id="auth-error"></div><button class="primary-button auth-submit" type="submit" id="auth-submit">Entrar al centro local <svg><use href="#i-arrow"/></svg></button></form>
@@ -42,10 +43,7 @@
   </div>
   <div class="app-shell" id="app-shell" hidden>
     <aside class="sidebar">
-      <a class="brand" href="#inicio" aria-label="Centinela 503 inicio">
-        <span class="brand-mark"><span class="brand-mark-core"></span><span class="brand-mark-orbit"></span></span>
-        <span class="brand-copy"><strong>centinela<span>503</span></strong><small>RESPUESTA COMUNITARIA</small></span>
-      </a>
+      <a class="brand" href="#inicio" aria-label="Centinela 503 inicio" style="display: block; padding: 24px 18px;"><span class="brand-copy" style="gap: 8px;"><img src="assets/img/lmagotipo-centinela.svg" alt="Centinela 503" style="width: 100%; height: auto; object-fit: contain; object-position: left;"><small>RESPUESTA COMUNITARIA</small></span></a>
       <div class="workspace-label">CENTRO DE OPERACIONES <span class="live-pip"></span></div>
       <nav class="main-nav" aria-label="Navegación principal">
         <a class="nav-link active" href="#inicio" data-view="overview"><svg><use href="#i-grid"/></svg> Vista general <span class="nav-count">01</span></a>
@@ -101,7 +99,12 @@
 
         <section class="operations-grid">
           <article class="panel map-panel">
-            <div class="panel-header map-header"><div><div class="section-kicker"><span class="section-kicker-dot"></span> GEOVIGILANCIA <span class="kicker-divider">/</span> EN VIVO</div><h2>Mapa de incidentes</h2></div><div class="map-controls"><span class="map-layer-label"><span></span> ZONA DE PRUEBA</span><button class="map-control" id="locate-button" title="Centrar mapa"><svg><use href="#i-crosshair"/></svg></button></div></div>
+            <div class="panel-header map-header"><div><div class="section-kicker"><span class="section-kicker-dot"></span> GEOVIGILANCIA <span class="kicker-divider">/</span> EN VIVO</div><h2>Mapa de incidentes</h2></div><div class="map-controls"><select class="map-layer-label" style="background: transparent; border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; min-width: 190px; color: inherit; font: inherit; outline: none; cursor: pointer; ">
+  <option value="sm">● SAN MIGUEL (PILOTO)</option>
+  <option value="mz" disabled>○ MORAZÁN (FASE 2)</option>
+  <option value="us" disabled>○ USULUTÁN (FASE 2)</option>
+  <option value="lu" disabled>○ LA UNIÓN (FASE 2)</option>
+</select><button class="map-control" id="locate-button" title="Centrar mapa"><svg><use href="#i-crosshair"/></svg></button></div></div>
             <div class="map-viewport" id="map-viewport" aria-label="Mapa táctico del piloto en San Miguel">
               <svg class="map-art" viewBox="0 0 900 430" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Mapa esquemático de San Miguel">
                 <defs><pattern id="map-grid" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M42 0H0V42" fill="none" stroke="#18303a" stroke-width=".7"/></pattern><pattern id="map-dots" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".65" fill="#31505a" opacity=".5"/></pattern><radialGradient id="map-glow"><stop stop-color="#00d2bb" stop-opacity=".12"/><stop offset="1" stop-color="#00d2bb" stop-opacity="0"/></radialGradient><linearGradient id="river" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#113d4b"/><stop offset="1" stop-color="#102b39"/></linearGradient></defs>
@@ -136,9 +139,9 @@
         <section class="bottom-grid">
           <article class="panel network-panel" id="red"><div class="panel-header"><div><div class="section-kicker"><span class="section-kicker-dot blue-dot"></span> COMUNICACIÓN LORA</div><h2>Actividad de nodos</h2></div><span class="pilot-tag">PILOTO · 2 NODOS</span></div><div class="node-list" id="node-list"></div><div class="network-foot"><svg><use href="#i-shield"/></svg> El servidor recibe datos en la red local <span>·</span> Sin nube</div></article>
           <article class="panel activity-panel" id="actividad"><div class="panel-header"><div><div class="section-kicker"><span class="section-kicker-dot green-dot"></span> TRAZABILIDAD</div><h2>Actividad reciente</h2></div><button class="quiet-button" id="activity-refresh" title="Actualizar actividad"><svg><use href="#i-refresh"/></svg></button></div><div class="activity-list" id="activity-list"></div></article>
-          <article class="panel readiness-panel" id="brigadas"><div class="panel-header"><div><div class="section-kicker"><span class="section-kicker-dot"></span> CAPACIDAD DE RESPUESTA</div><h2>Estado del piloto</h2></div><span class="readiness-icon"><svg><use href="#i-shield"/></svg></span></div><div class="readiness-score"><div><strong>POC</strong><span>Entorno controlado</span></div><span class="readiness-badge"><i></i> EN VALIDACIÓN</span></div><div class="readiness-divider"></div><div class="readiness-row"><span>Persistencia local</span><strong><i class="ready-check"><svg><use href="#i-check"/></svg></i> ACTIVA</strong></div><div class="readiness-row"><span>Sugerencia por reglas locales</span><strong id="ml-readiness"><i class="ready-pending">!</i> POR VERIFICAR</strong></div><div class="readiness-row"><span>Gestión de brigadas</span><strong class="ready-check"><svg><use href="#i-check"/></svg> INTEGRADA</strong></div><div class="readiness-note"><span>i</span> Las sugerencias requieren validación humana. No sustituyen un modelo NLP entrenado ni una ruta vial.</div></article>
+          
         </section>
-        <footer class="page-footer"><span>© CENTINELA 503 <i>·</i> PILOTO ACADÉMICO</span><span><i class="footer-lock"></i> DATOS ALMACENADOS LOCALMENTE</span><span>BUILD 0.2.0 <b>●</b></span></footer>
+        <footer class="page-footer"><span>© CENTINELA 503</span><span>BUILD 1.0.0 <b>●</b></span></footer>
       </div>
       <section class="management-view" id="management-view" hidden>
         <div class="page-wrap"><div class="management-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> ADMINISTRACIÓN OPERATIVA</div><h1 id="management-title">Incidentes</h1><p id="management-subtitle">Gestión local del piloto Centinela 503.</p></div><button class="primary-button" id="management-action"><svg><use href="#i-plus"/></svg><span>Nuevo registro</span></button></div><div id="management-content"></div></div>
@@ -164,7 +167,7 @@
   <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
   <script src="js/api.js?v=20260928-3"></script>
   <script src="js/map.js?v=20260928-3"></script>
-  <script src="js/app.js?v=20260928-3"></script>
+  <script src="js/app.js?v=20261001-1"></script>
   <script src="js/product.js?v=20260928-3"></script>
 </body>
 </html>

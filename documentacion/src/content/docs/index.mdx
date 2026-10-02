@@ -1,0 +1,32 @@
+---
+title: Centinela 503
+description: Documentación oficial del sistema de respuesta a emergencias Centinela 503.
+template: splash
+hero:
+  tagline: Plataforma comunitaria de respuesta a emergencias de tipo "offline-first". Su objetivo es permitir la comunicación de alertas tempranas y la gestión de recursos de rescate en zonas sin cobertura de internet tradicional.
+  image:
+    file: ../../assets/logo.svg
+  actions:
+    - text: Leer la documentación
+      link: /documentacion/guides/arquitectura/
+      icon: right-arrow
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Características principales
+
+<CardGrid stagger>
+	<Card title="Hardware LoRa de Largo Alcance" icon="setting">
+		Nodos con microcontroladores ESP32, módulos transceptores LoRa RFM95 (915MHz) y antenas de 6dBi para enlaces punto a punto.
+	</Card>
+	<Card title="Motor de IA Local" icon="magnifier">
+		Modelos NLP para el triaje automatizado de emergencias y análisis espacial (DBSCAN) para agrupar reportes en el mapa.
+	</Card>
+	<Card title="Dashboard Resiliente" icon="laptop">
+		Panel de control con mapa interactivo de San Miguel, gestión de brigadas, autenticación JWT y alertas de "Sin Conexión".
+	</Card>
+	<Card title="Gestión Ágil y ODS" icon="list-format">
+		Proyecto gestionado mediante Azure DevOps, con un enfoque estricto en los Objetivos de Desarrollo Sostenible (ODS) y calidad de software (QA).
+	</Card>
+</CardGrid>

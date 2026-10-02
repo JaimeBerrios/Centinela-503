@@ -1,0 +1,67 @@
+---
+title: Equipo de Desarrollo
+description: Conoce a los integrantes detrás del proyecto Centinela 503.
+---
+
+import { Badge, Steps } from '@astrojs/starlight/components';
+
+Centinela 503 ha sido desarrollado para competir en el concurso de **"Proyectos Innovadores en TIC" de ASPROC**, por un equipo universitario apasionado por la resiliencia tecnológica y la respuesta comunitaria.
+
+---
+
+## 👨‍💻 Jaime Fernando Berrios Ortiz 
+<Badge text="Tech Lead / Backend e IA" variant="note" size="medium" /> <Badge text="bo0310042024" variant="default" size="medium" />
+
+Encargado de la arquitectura principal del sistema. Diseñó y desarrolló el servidor central en Python utilizando FastAPI, gestionando la base de datos local en SQLite. Implementó el motor de Inteligencia Artificial que realiza el triaje automatizado mediante NLP y el análisis espacial (DBSCAN) para la agrupación inteligente de reportes en el mapa.
+
+**Tareas destacadas:**
+- Levantar el servidor local con FastAPI y estructurar la base de datos de incidentes.
+- Desarrollar lógica para agrupar reportes duplicados por proximidad espacial.
+- Integrar el agente de Triaje (Scikit-learn) para asignar nivel de prioridad a las alertas.
+
+---
+
+## 👨‍💻 Florentín Alexander Treminio Herrera
+<Badge text="Frontend y Seguridad" variant="success" size="medium" /> <Badge text="th0988042023" variant="default" size="medium" />
+
+Responsable de toda la interfaz web orientada a táctica y despliegue rápido. Construyó el dashboard "offline-first" utilizando HTML5, Vanilla JS, Tailwind CSS y Leaflet.js para el mapeo. Aseguró la plataforma implementando consumo asíncrono de API, autenticación basada en tokens JWT y un estricto control de operaciones por roles de usuario.
+
+**Tareas destacadas:**
+- Desarrollar entorno web local integrando el mapa de visualización de incidentes.
+- Implementar el control de sesiones para Administrador, Coordinador, Operador y Reportante.
+- Programar bitácora en tiempo real para registrar quién valida o cierra cada emergencia.
+
+---
+
+## 👨‍💻 Jefferson Jared Bonilla Meléndez
+<Badge text="Hardware y Telecomunicaciones" variant="caution" size="medium" /> <Badge text="bm0749042022" variant="default" size="medium" />
+
+Encargado de la capa física y la resiliencia de la red de comunicaciones. Su tarea fundamental abarcó el ensamblaje, la soldadura y la programación en C++ de microcontroladores ESP32 junto con módulos transceptores LoRa RFM95 (915MHz) y antenas de 6dBi, garantizando un enlace de radiofrecuencia robusto sin depender de Wi-Fi o internet tradicional.
+
+**Tareas destacadas:**
+- Ensamblar y configurar el nodo Gateway para recibir datos vía serial/USB.
+- Ensamblar la Estación de Campo única (ESP32 + LoRa) con alimentación por batería y botón de captura.
+
+---
+
+## 👩‍💻 Genesis Abigail Saravia Carpio
+<Badge text="Gestión Azure y Documentación" variant="danger" size="medium" /> <Badge text="sc0139042023" variant="default" size="medium" />
+
+Fundamental en la administración ágil y estratégica del proyecto. Encargada de mantener los flujos de trabajo organizados mediante los tableros de Azure DevOps/Boards, estructurar toda la documentación formal de requerimientos y asegurar la correcta alineación del proyecto con los parámetros del concurso.
+
+**Tareas destacadas:**
+- Maquetar documento de requerimientos y extraer métricas de Azure DevOps.
+
+---
+
+## 👩‍💻 Rosmeri Estefani González Pérez
+<Badge text="Aseguramiento de Calidad (QA)" variant="tip" size="medium" /> <Badge text="gp0382042023" variant="default" size="medium" />
+
+Eje central para la validación y el aseguramiento de la calidad (QA) del sistema. Responsable de alinear estratégicamente el proyecto con los Objetivos de Desarrollo Sostenible (ODS), estructurar el marco teórico de la propuesta y ejecutar escenarios exhaustivos de prueba a lo largo del ciclo de vida del software.
+
+**Tareas destacadas:**
+- Pruebas de calidad (QA): Validar envío de alertas nodo a nodo.
+
+---
+
+*Desarrollado con ❤️ en San Miguel, El Salvador.*

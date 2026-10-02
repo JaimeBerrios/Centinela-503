@@ -44,3 +44,23 @@ app.add_middleware(
 )
 
 app.include_router(api_router)
+
+# --- CONFIGURACIÓN PARA SERVIR EL FRONTEND DESDE FASTAPI ---
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../frontend"))
+if os.path.isdir(frontend_path):
+    app.mount("/css", StaticFiles(directory=os.path.join(frontend_path, "css")), name="css")
+    app.mount("/js", StaticFiles(directory=os.path.join(frontend_path, "js")), name="js")
+    app.mount("/assets", StaticFiles(directory=os.path.join(frontend_path, "assets")), name="assets")
+
+    @app.get("/")
+    async def serve_frontend():
+        return FileResponse(os.path.join(frontend_path, "index.html"))
+
+
+docs_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../documentacion/dist"))
+if os.path.isdir(docs_path):
+    app.mount("/documentacion", StaticFiles(directory=docs_path, html=True), name="documentacion")
