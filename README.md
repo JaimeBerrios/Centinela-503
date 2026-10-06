@@ -1,3 +1,8 @@
+<div align="center">
+  <img src="frontend/assets/img/lsotipo-centinela.svg" alt="Isotipo Centinela" width="150">
+  <br><br>
+</div>
+
 # 🛡️ Centinela-503
 
 Centinela-503 es un proyecto orientado a la adquisición, procesamiento y análisis de datos provenientes de nodos ESP32/LoRa conectados mediante USB a un servidor local. 

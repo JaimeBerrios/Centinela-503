@@ -1,0 +1,276 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{top=0.90cm,bottom=1.20cm,left=1.55cm,right=1.55cm}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage[skins]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{ragged2e}
+\usepackage[hidelinks]{hyperref}
+
+% Definición de colores institucionales
+\definecolor{navy}{HTML}{173864}
+\definecolor{cyan}{HTML}{1C88A8}
+\colorlet{ink}{black}
+\colorlet{line}{cyan}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlist[itemize]{leftmargin=4.5mm,itemsep=1.8pt,topsep=2pt,parsep=0pt}
+\renewcommand{\arraystretch}{1.18}
+\emergencystretch=3em % Ajuste mayor para evitar desbordes
+
+% Comandos
+\newcommand{\sectionicon}[1]{\textcolor{cyan}{#1}\enspace}
+
+% Formato de Secciones
+\titleformat{\section}
+  {\large\bfseries\color{navy}}
+  {\makebox[6mm]{\thesection}}
+  {2.5mm}{}
+\titlespacing*{\section}{0pt}{7pt}{4pt}
+
+% Cajas de texto (infobox y techbox)
+\newtcolorbox{infobox}[1][]{
+  enhanced,colback=white,colframe=line,boxrule=.5pt,arc=1.5mm,
+  left=3mm,right=3mm,top=2.2mm,bottom=2.2mm,
+  before skip=3pt,after skip=4pt,#1
+}
+\newtcolorbox{techbox}[1]{
+  enhanced,colback=white,colframe=line,boxrule=.6pt,
+  borderline west={2.2pt}{0pt}{cyan},arc=1mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=2.5pt,after skip=2.5pt,title={#1},
+  coltitle=navy,fonttitle=\bfseries,
+  attach boxed title to top left={xshift=2mm,yshift=-1.4mm},
+  boxed title style={colback=white,colframe=white,boxrule=0pt}
+}
+\newtcolorbox{killerbox}[1]{
+  enhanced,colback=white,colframe=navy,boxrule=.6pt,
+  borderline west={2.2pt}{0pt}{navy},arc=1mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=2.5pt,after skip=2.5pt,title={#1},
+  coltitle=white,fonttitle=\bfseries
+}
+
+% Encabezados modificados (Solo Logo Centinela)
+\newcommand{\projectheader}{%
+  \begin{center}
+    {\fontsize{7.2}{8.5}\selectfont\bfseries\color{ink} MANUAL DE DEFENSA TÉCNICA Y OPERATIVA\par}
+    \vspace{3mm}
+    \includegraphics[width=5cm,keepaspectratio]{docs/img/logo-centinela.pdf}\par
+    \vspace{3mm}
+    {\fontsize{7.8}{9}\selectfont\color{ink} XVI Congreso de Informática en El Salvador (CONINFO 2026)\par}
+  \end{center}
+  \vspace{1mm}
+  {\color{navy}\rule{\textwidth}{1.1pt}}
+}
+
+\newcommand{\compactheader}{%
+  \begin{center}
+    \vspace{2mm}
+    \includegraphics[width=4cm,keepaspectratio]{docs/img/logo-centinela.pdf}\par
+    \vspace{2mm}
+    {\fontsize{7.4}{8.5}\selectfont\color{ink} CONINFO 2026 \textperiodcentered{} MANUAL DE DEFENSA\par}
+  \end{center}
+  \vspace{1mm}
+  {\color{navy}\rule{\textwidth}{.8pt}}
+}
+
+\newcommand{\categoryband}{%
+  \begin{infobox}[colframe=line,top=1.5mm,bottom=1.5mm,before skip=2mm,after skip=2.5mm]
+    \centering\fontsize{8}{9.5}\selectfont\color{navy}
+    \textbf{Categoría a participar:} viii. Inteligencia Artificial (agentes de IA, modelos locales y automatización de código).
+  \end{infobox}
+}
+
+\begin{document}
+\sloppy % Evita desbordamiento de renglones y márgenes
+\color{ink}
+\projectheader
+\categoryband
+
+\begin{infobox}[colframe=navy]
+  \centering\color{navy}\bfseries
+  Guía de preparación y sustento arquitectónico para la presentación ante el jurado
+\end{infobox}
+
+\section*{\sectionicon{\faLock}Visión General y Enfoque de Demostración}
+\justifying
+\textbf{Centinela 503} es una plataforma de respuesta comunitaria *offline-first* diseñada para coordinar emergencias sin depender de conectividad externa. Para nuestra presentación en el concurso ASPROC (CONINFO 2026), el proyecto operará como un piloto de campo enfocado en la versatilidad de un ecosistema de \textbf{propósito general}.
+
+El despliegue utilizará \textbf{datos simulados y alertas aleatorias} detonadas mediante un botón físico conectado al nodo de campo. En lugar de simular sensores estáticos (como humo o temperatura), inyectamos cadenas de texto variadas. Esto prueba que nuestra Inteligencia Artificial local puede comprender semánticamente el problema, clasificarlo y asignar recursos, operando en múltiples contextos sin modificar el código fuente.
+
+\section*{\sectionicon{\faLightbulb}Núcleo Analítico mediante Inteligencia Artificial}
+\justifying
+Para cumplir de forma impecable con la categoría de Inteligencia Artificial del congreso, la plataforma emplea agentes de software y algoritmos ejecutados \textbf{100\% en local} dentro del backend, demostrando autonomía operativa y automatización de procesos sin requerir servicios externos.
+
+\begin{techbox}{\sectionicon{\faComments}Triaje Automatizado (Procesamiento de Lenguaje Natural)}
+\small\justifying
+Cuando ingresa una alerta de texto cruda (ej. "persona atrapada" o "inundación"), el motor de NLP analiza su semántica. Automáticamente determina la categoría del incidente y le asigna un nivel de \textbf{Prioridad Sugerida} (Alta, Media, Baja). Este agente de software actúa como un primer interviniente digital para acelerar la toma de decisiones.
+\end{techbox}
+
+\begin{techbox}{\sectionicon{\faProjectDiagram}Agrupamiento Espacial y Distancia Haversine}
+\small\justifying
+Para evitar la saturación visual y operativa, el sistema aplica algoritmos de \textit{Machine Learning} no supervisados para agrupar reportes. Calcula las distancias geoespaciales exactas entre cada alerta ciudadana utilizando la \textbf{Fórmula del Semiverseno (Haversine)}, que toma en consideración la curvatura de la Tierra. Si múltiples incidentes ocurren a menos de \textbf{50 metros} y dentro de una ventana temporal de 15 minutos, el modelo los clusteriza en un único evento mayor.
+\end{techbox}
+
+\begin{techbox}{\sectionicon{\faRoute}Agente de Asignación y Sugerencia de Recursos}
+\small\justifying
+Con base en la categoría inferida por la IA y la ubicación exacta del cluster (Haversine), un algoritmo de emparejamiento cruza las habilidades requeridas (ej. rescate o medicina) con las habilidades registradas de cada brigada disponible. El agente genera una tabla de puntajes (\textit{scoring}) y recomienda al Coordinador de Emergencia cuál es la unidad más óptima y cercana para ser despachada.
+\end{techbox}
+
+\vfill
+\noindent
+{\footnotesize\color{cyan}\bfseries CENTINELA 503 \hfill MANUAL DE DEFENSA}
+\newpage
+\compactheader
+
+\section*{\sectionicon{\faGlobe}Alineación con los Objetivos de Desarrollo Sostenible (ODS)}
+\justifying
+El impacto y escalabilidad de Centinela 503 se fundamentan en tres ODS prioritarios:
+
+\begin{techbox}{\sectionicon{\faCity}ODS 11: Ciudades y Comunidades Sostenibles}
+\small\justifying
+La plataforma fortalece la resiliencia urbana. El algoritmo espacial (Haversine) evita la saturación informativa consolidando reportes concurrentes, garantizando una coordinación ordenada en crisis.
+\end{techbox}
+
+\begin{techbox}{\sectionicon{\faCogs}ODS 9: Industria, Innovación e Infraestructura}
+\small\justifying
+Integramos hardware de bajo costo con infraestructura 100\% local, eliminando la dependencia de servidores en la nube. Representa una infraestructura de telecomunicaciones tolerante a fallas.
+\end{techbox}
+
+\begin{techbox}{\sectionicon{\faUsers}ODS 16: Paz, Justicia e Instituciones Sólidas}
+\small\justifying
+El triaje automatizado de la IA reduce el tiempo de identificación de alertas críticas, apoyando a instituciones como Protección Civil. El Dashboard audita y transparenta las operaciones.
+\end{techbox}
+
+\section*{\sectionicon{\faLayerGroup}Stack Tecnológico (Componentes)}
+\justifying
+El proyecto se construyó integrando rigurosamente las siguientes tecnologías:
+\begin{infobox}
+\textbf{Software y Arquitectura:}
+\begin{itemize}
+    \item \textbf{Backend:} Python 3, framework \textbf{FastAPI} para la creación de la API REST, y base de datos relacional \textbf{SQLite} optimizada para concurrencia local.
+    \item \textbf{Inteligencia Artificial:} Motor de \textbf{NLP} semántico y clusterización aplicando la \textbf{Fórmula de Haversine}.
+    \item \textbf{Frontend:} Interfaz \textbf{Vanilla JS} (JavaScript puro), diseño fluido con \textbf{Tailwind CSS}, y motor de mapas interactivos renderizados \textit{offline} con \textbf{Leaflet.js}.
+    \item \textbf{Seguridad:} Sistema de sesión protegido mediante autenticación sin estado con Tokens \textbf{JWT}.
+\end{itemize}
+\vspace{2mm}
+\textbf{Hardware y Comunicaciones:}
+\begin{itemize}
+    \item \textbf{Cómputo:} Microcontroladores \textbf{ESP32} (núcleo dual de alta eficiencia).
+    \item \textbf{Radiofrecuencia:} Módulos Transceptores LoRa \textbf{RFM95} operando a \textbf{915MHz}.
+    \item \textbf{Antenas:} Antenas omnidireccionales de \textbf{6dBi} para maximizar la ganancia.
+    \item \textbf{Energía:} Módulo de carga tipo \textbf{Power Bank (5V)} para autonomía en campo.
+\end{itemize}
+\end{infobox}
+
+\vfill
+\noindent
+{\footnotesize\color{cyan}\bfseries CENTINELA 503 \hfill MANUAL DE DEFENSA}
+\newpage
+\compactheader
+
+\section*{\sectionicon{\faPlayCircle}Guía de Ejecución Paso a Paso}
+\justifying
+Para levantar el ecosistema el día de la defensa, sigue este procedimiento garantizando que no haya dependencia de internet:
+
+\begin{techbox}{Paso 1: Inicialización del Hardware y RF}
+\small\justifying
+Conectar el \textbf{Nodo Receptor (Base)} a un puerto USB de la computadora designada como servidor. Asegurarse de que el sistema reconozca el puerto serie (ej. \textbf{/dev/ttyUSB0} o \textbf{COM3}). Posteriormente, encender el Nodo Emisor de campo garantizando que tenga carga en la batería. Operamos LoRa con \textbf{Spreading Factor 10 (SF10)} para penetración de obstáculos.
+\end{techbox}
+
+\begin{techbox}{Paso 2: Ejecución del Backend (API e Inteligencia Artificial)}
+\small\justifying
+Abrir una terminal, activar el entorno virtual y levantar el servidor de FastAPI. Desde la raíz del directorio backend, ejecutar el comando: \newline \textbf{uvicorn app.main:app -\relax-host 127.0.0.1 -\relax-port 8000} \newline El servidor cargará los modelos locales de IA en memoria y abrirá la escucha serial.
+\end{techbox}
+
+\begin{techbox}{Paso 3: Arranque del Frontend (Dashboard Interactivo)}
+\small\justifying
+Levantar el cliente web. Puedes utilizar una extensión como Live Server en VS Code o un servidor estático rápido (ej. \textbf{python -m http.server}). Abre el navegador en la ruta provista (ej. \textbf{http://localhost:5500}) e inicia sesión en el panel para comenzar a visualizar y coordinar alertas mediante la IA.
+\end{techbox}
+
+\section*{\sectionicon{\faQuestionCircle}Simulador de Preguntas Complejas del Jurado (Killer Questions)}
+\justifying
+
+\vspace{1mm}
+
+\begin{killerbox}{1. Su categoría es la VIII (Inteligencia Artificial). \textquestiondown Dónde se ejecuta la IA y por qué no usar la API de ChatGPT u OpenAI?}
+\small\justifying
+\textbf{Sustento Técnico:} Nuestro sistema es de respuesta ante desastres donde las telecomunicaciones fallan por completo. Depender de la API de OpenAI significa requerir acceso a internet, lo cual es inaceptable en una catástrofe. Por ello, toda nuestra Inteligencia Artificial (procesamiento de lenguaje natural, clusterización Haversine y asignación de recursos) está desarrollada nativamente en Python y se ejecuta localmente en el procesador del servidor, sin latencia de red ni dependencia de terceros.
+\end{killerbox}
+
+\begin{killerbox}{2. \textquestiondown Por qué simular datos en lugar de usar sensores de humo/humedad reales?}
+\small\justifying
+\textbf{Sustento Técnico:} Un sensor de humo nos encasilla como una simple "alarma de incendios". Al inyectar textos descriptivos variables desde el botón, demostramos que nuestro agente de software (NLP) lee, clasifica y prioriza emergencias de naturaleza completamente distinta (sismos, disturbios civiles, colapsos estructurales) de manera automática. Exhibimos un ecosistema de propósito general verdaderamente inteligente.
+\end{killerbox}
+
+\vfill
+\noindent
+{\footnotesize\color{cyan}\bfseries CENTINELA 503 \hfill MANUAL DE DEFENSA}
+\newpage
+\compactheader
+
+\begin{killerbox}{3. \textquestiondown Qué ocurre si múltiples alertas solicitan la misma brigada simultáneamente?}
+\small\justifying
+\textbf{Sustento Técnico:} Utilizamos transacciones atómicas y bloqueos de escritura seguros nativos de la base de datos (SQLite / FastAPI). La primera solicitud asegura la reserva de la brigada a nivel base de datos; cuando la segunda solicitud (milisegundos después) es evaluada, la transacción le informa de la falta de disponibilidad y el motor de recomendación de IA recalcula instantáneamente para sugerir a la segunda mejor brigada disponible.
+\end{killerbox}
+
+\begin{killerbox}{4. \textquestiondown Cómo evitan colapsar la memoria del equipo usando Machine Learning local?}
+\small\justifying
+\textbf{Sustento Técnico:} Descartamos Redes Neuronales Profundas (LLMs de cientos de GB) que no son viables en equipos de gama media u operaciones de campaña. En su lugar, hemos implementado una IA basada en algoritmos estadísticos altamente eficientes. El análisis de densidad espacial y el cálculo trigonométrico de coordenadas consumen muy pocos ciclos de CPU, permitiendo correr nuestro modelo con alto rendimiento y nula exigencia de tarjetas de video (GPU).
+\end{killerbox}
+
+\begin{killerbox}{5. \textquestiondown Por qué usar módulos LoRa y crear su propia red en lugar de hacer una app conectada a Tigo o Claro?}
+\small\justifying
+\textbf{Sustento Técnico:} El problema de depender de redes comerciales es el \textbf{Punto Único de Fallo} (\textit{Single Point of Failure}). En desastres como los terremotos de 2001, las redes comerciales colapsan inmediatamente por saturación, cortes de fibra óptica o caída de energía en las antenas LTE. Nuestra red LoRa es descentralizada, independiente de los Proveedores de Servicios de Internet (ISP) y funciona con baterías, garantizando comunicación vital cuando todo lo demás falla.
+\end{killerbox}
+
+\begin{killerbox}{6. \textquestiondown Qué pasa si el servidor central se apaga, se reinicia accidentalmente o el cable USB se desconecta?}
+\small\justifying
+\textbf{Sustento Técnico (Arquitectura de Resiliencia):} Si el servidor cae, el frontend web detecta la caída de la API y muestra una alerta de "Sin Conexión", pero gracias a los Tokens JWT, la sesión no se pierde. En el backend, usamos FastAPI con una base de datos SQLite persistente. Al reiniciar la PC y encender el script, el sistema recupera su estado anterior exacto y vuelve a abrir el puerto serial para recibir las nuevas alertas en segundos.
+\end{killerbox}
+
+\vfill
+\noindent
+{\footnotesize\color{cyan}\bfseries CENTINELA 503 \hfill MANUAL DE DEFENSA}
+\newpage
+\compactheader
+
+\begin{killerbox}{7. Este prototipo cubre el campus (2km). \textquestiondown Cómo escalarían este proyecto para cubrir todo San Miguel?}
+\small\justifying
+\textbf{Sustento Técnico:} La red LoRa permite topologías de \textbf{Malla} (\textit{Mesh}) o el uso de repetidores. Colocando antenas LoRa en puntos de alta elevación (como en la cima del Volcán Chaparrastique o en antenas de radio existentes en el Cerro de Las Figuras), los nodos emisores triangularían la señal, rebotando el mensaje de nodo en nodo hasta llegar al Centro de Operaciones, cubriendo decenas de kilómetros sin costo adicional de transmisión.
+\end{killerbox}
+
+\begin{killerbox}{8. Si ganan hoy, \textquestiondown en qué zonas de mayor riesgo de San Miguel implementarían este proyecto mañana mismo y por qué?}
+\small\justifying
+\textbf{Sustento Técnico (Protección Civil y Gestión de Riesgos):} Desplegaríamos la topología inicial dividida en dos ejes críticos de vulnerabilidad histórica en San Miguel:
+
+\textbf{1. Eje de Inundaciones (Río Grande de San Miguel):} Instalaríamos Nodos Emisores en \textbf{Cantón La Canoa, Caserío Santa Fidelia y Colonia Carrillo}. Son planicies de inundación que rutinariamente quedan incomunicadas y aisladas durante tormentas severas. Un nodo allí serviría como alerta temprana del desbordamiento, transmitiendo por LoRa mucho antes de que las líneas telefónicas comerciales colapsen por la lluvia.
+
+\textbf{2. Eje Volcánico y Lahares (Volcán Chaparrastique):} Ubicaríamos emisores en \textbf{Las Placitas, Caserío La Cruz y El Conacastal}. Estas zonas altas sufren de un severo efecto de ``sombra celular'' (cero cobertura LTE) y están expuestas a flujos de escombros (lahares) y enjambres sísmicos. La robustez física y autonomía de nuestra placa ESP32+RFM95 garantiza comunicación desde la falda del volcán hacia el valle.
+
+\textbf{Arquitectura de Despliegue:} Mientras estos Nodos Emisores quedan en las zonas de riesgo, el \textbf{Nodo Receptor y el Servidor Local (Dashboard + Inteligencia Artificial)} se instalarían estratégicamente en el \textbf{Centro de Operaciones de Emergencia (COE) municipal} o en la delegación urbana de Protección Civil, centralizando la toma de decisiones.
+
+\vspace{1mm}
+\textbf{Si el jurado pregunta: "\textquestiondown Realizaron un estudio de campo previo para afirmar esto?"} \\
+\textit{Respuesta:} "Sí. Realizamos un cruce preliminar de información utilizando las matrices de vulnerabilidad histórica de Protección Civil y los mapas de riesgo del MARN (Ministerio de Medio Ambiente). Nuestro estudio determinó que la falla crítica de San Miguel no es la falta de planes de contingencia, sino el \textbf{colapso comunicacional} (apagones y pérdida de señal celular) durante las primeras horas de una catástrofe (Golden Hours). Por ello, el hardware de Centinela 503 está diseñado para mitigar exactamente este punto de quiebre."
+\end{killerbox}
+
+\vfill
+\noindent
+{\footnotesize\color{cyan}\bfseries CENTINELA 503 \hfill MANUAL DE DEFENSA}
+\end{document}

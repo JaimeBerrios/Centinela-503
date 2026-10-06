@@ -342,11 +342,17 @@ def update_brigade(brigade_id: int, fields: dict):
 
 def create_assignment(incident_id: int, brigade_id: int, assigned_by: int, note: str):
     with connection() as conn:
-        cursor = conn.execute("INSERT INTO assignments(incident_id,brigade_id,assigned_by,note) VALUES(?,?,?,?)",
-                              (incident_id,brigade_id,assigned_by,note.strip()))
-        conn.execute("UPDATE sensors_data SET resolution_status='Asignada' WHERE id=?", (incident_id,))
-        conn.execute("UPDATE brigades SET status='Asignada',updated_at=CURRENT_TIMESTAMP WHERE id=?", (brigade_id,))
-        return cursor.lastrowid
+        cursor = conn.cursor()
+        cursor.execute("SELECT status FROM brigades WHERE id=?", (brigade_id,))
+        b_status = cursor.fetchone()
+        if not b_status or b_status["status"] != "Disponible":
+            raise ValueError("La brigada ya no está disponible.")
+        cursor.execute("INSERT INTO assignments(incident_id,brigade_id,assigned_by,note) VALUES(?,?,?,?)",
+                       (incident_id,brigade_id,assigned_by,note.strip()))
+        inserted_id = cursor.lastrowid
+        cursor.execute("UPDATE sensors_data SET resolution_status='Asignada' WHERE id=?", (incident_id,))
+        cursor.execute("UPDATE brigades SET status='Asignada',updated_at=CURRENT_TIMESTAMP WHERE id=?", (brigade_id,))
+        return inserted_id
 
 
 def list_assignments():
@@ -453,3 +459,26 @@ def dashboard_summary():
         active_assignments = conn.execute("SELECT COUNT(*) FROM assignments WHERE status IN ('Asignada','En camino','Atendiendo')").fetchone()[0]
         return {"total_incidents": total, "open_incidents": open_count, "high_priority_open": high,
                 "unassigned_incidents": unassigned, "active_assignments": active_assignments}
+
+
+def delete_incidents_bulk(incident_ids: list[int]) -> int:
+    import sqlite3
+    with connection() as conn:
+        cursor = conn.cursor()
+        # Verify if any has assignments
+        placeholders = ",".join("?" * len(incident_ids))
+        cursor.execute(f"SELECT COUNT(*) FROM assignments WHERE incident_id IN ({placeholders})", incident_ids)
+        if cursor.fetchone()[0] > 0:
+            raise ValueError("No se pueden eliminar alertas que ya tienen brigadas asignadas.")
+        cursor.execute(f"DELETE FROM sensors_data WHERE id IN ({placeholders})", incident_ids)
+        return cursor.rowcount
+
+def delete_incident(incident_id: int) -> bool:
+    import sqlite3
+    with connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM assignments WHERE incident_id=?", (incident_id,))
+        if cursor.fetchone()[0] > 0:
+            raise ValueError("No se puede eliminar porque tiene brigadas asignadas.")
+        cursor.execute("DELETE FROM sensors_data WHERE id=?", (incident_id,))
+        return cursor.rowcount > 0

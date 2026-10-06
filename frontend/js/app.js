@@ -2,6 +2,24 @@
   const $ = (selector, parent = document) => parent.querySelector(selector);
   const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
   const state = { connected: false, demo: true, clusters: [], alerts: [], filter: 'all', expanded: false, picked: null, lastSync: null };
+
+  let prevAlertCount = -1;
+  const playBeep = () => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.5);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.5);
+    } catch (e) {}
+  };
+
   let canReport = true;
   const sampleAlerts = [
     { id: 'demo-1', node_id: 2, status: 'Emergencia', priority: 'Alta', latitude: 13.4862, longitude: -88.1814, incident_text: 'Inundación reportada cerca del mercado municipal', timestamp: new Date(Date.now() - 3 * 60000).toISOString(), demo: true },
@@ -150,6 +168,10 @@
       state.demo = false;
       state.clusters = Array.isArray(payload.data) ? payload.data : [];
       state.alerts = allAlerts(state.clusters);
+      if (prevAlertCount !== -1 && state.alerts.length > prevAlertCount) {
+        playBeep();
+      }
+      prevAlertCount = state.alerts.length;
       state.lastSync = new Date();
     } catch (error) {
       state.connected = false;
@@ -195,6 +217,23 @@
   }
 
   $('#open-report').addEventListener('click', openReport);
+  $('#clear-hardware-alert')?.addEventListener('click', async (e) => {
+    if (e.target.disabled) return;
+    e.target.disabled = true;
+    e.target.style.opacity = '0.5';
+    try {
+      await CentinelaAPI.clearHardwareAlert();
+      showToast('Alarma física silenciada exitosamente.');
+    } catch (error) {
+      showToast(error.message || 'Error al silenciar alarma.', true);
+    } finally {
+      setTimeout(() => {
+        e.target.disabled = false;
+        e.target.style.opacity = '1';
+      }, 2000);
+    }
+  });
+
   $('#open-map-report').addEventListener('click', openReport);
   $('#close-report').addEventListener('click', closeReport);
   $('#report-modal').addEventListener('click', (event) => { if (event.target === $('#report-modal')) closeReport(); });
@@ -202,6 +241,15 @@
   $('#map-pick').addEventListener('click', startLocationPick);
   CentinelaMap.onLocation(updateLocation);
   $('#refresh-button').addEventListener('click', sync);
+  $('#mobile-menu-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    $('.sidebar').classList.toggle('open');
+  });
+  document.addEventListener('click', (e) => {
+    if (!$('.sidebar').contains(e.target) && !$('#mobile-menu-btn')?.contains(e.target)) {
+      $('.sidebar').classList.remove('open');
+    }
+  });
   $('#activity-refresh').addEventListener('click', sync);
   $('#view-all').addEventListener('click', () => { state.expanded = true; $('#alertas').scrollIntoView({ behavior: 'smooth', block: 'start' }); renderIncidents(); });
   $('#show-all-button').addEventListener('click', () => { state.expanded = !state.expanded; renderIncidents(); });

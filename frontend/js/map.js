@@ -9,17 +9,18 @@
   function coords(latitude, longitude) {
     const lat = Number(latitude);
     const lon = Number(longitude);
-    if (lat < minLat || lat > maxLat || lon < minLon || lon > maxLon) return null;
+    let cLat = Math.max(minLat, Math.min(maxLat, lat));
+    let cLon = Math.max(minLon, Math.min(maxLon, lon));
     return {
-      x: 48 + ((lon - minLon) / (maxLon - minLon)) * 804,
-      y: 34 + (1 - ((lat - minLat) / (maxLat - minLat))) * 350,
+      x: 48 + ((cLon - minLon) / (maxLon - minLon)) * 804,
+      y: 34 + (1 - ((cLat - minLat) / (maxLat - minLat))) * 350,
     };
   }
 
   function draw(clusters = [], selectIncident) {
     onSelect = selectIncident || null;
     layer.replaceChildren();
-    clusters.slice(0, 40).forEach((cluster, index) => {
+    clusters.forEach((cluster, index) => {
       const x = Number(cluster.center_longitude);
       const y = Number(cluster.center_latitude);
       if (!Number.isFinite(x) || !Number.isFinite(y)) return;

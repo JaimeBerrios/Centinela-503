@@ -7,7 +7,7 @@
   <meta name="description" content="Centinela 503 · Centro local de coordinación de alertas comunitarias.">
     <link rel="icon" type="image/svg+xml" href="assets/img/lsotipo-centinela.svg">
   <title>Centinela 503 · Centro de operaciones</title>
-  <link rel="stylesheet" href="css/styles.css?v=20260928-2">
+  <link rel="stylesheet" href="css/styles.css?v=20261006-2">
 </head>
 <body>
   <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -74,7 +74,7 @@
 
     <main class="main-content" id="inicio">
       <header class="topbar">
-        <div class="breadcrumb"><span>OPERACIONES</span><svg><use href="#i-chevron"/></svg><strong>Vista general</strong></div>
+        <div class="breadcrumb"><button class="icon-button" id="mobile-menu-btn" aria-label="Menú principal" style="display:none;"><svg><use href="#i-grid"/></svg></button><span>OPERACIONES</span><svg><use href="#i-chevron"/></svg><strong>Vista general</strong></div>
         <div class="topbar-right">
           <div class="connection-pill" id="connection-pill"><span class="connection-dot"></span><span id="connection-label">CONECTANDO API</span></div>
           <span class="topbar-divider"></span>
@@ -87,7 +87,10 @@
       <div class="page-wrap" id="overview-view">
         <section class="welcome-row">
           <div><div class="eyebrow"><span class="eyebrow-line"></span> TABLERO TÁCTICO <span class="eyebrow-date" id="header-date">—</span></div><h1>Centro de <span>respuesta</span></h1><p class="welcome-subtitle">Lectura operativa del piloto · Distrito de San Miguel</p></div>
-          <button class="primary-button report-action" id="open-report"><svg><use href="#i-plus"/></svg> Registrar alerta <span class="button-shortcut">N</span></button>
+          <div class="welcome-actions">
+            <button type="button" class="secondary-button" id="clear-hardware-alert"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/></svg><span>Silenciar alarma</span></button>
+            <button class="primary-button report-action" id="open-report"><svg><use href="#i-plus"/></svg> Registrar alerta <span class="button-shortcut">N</span></button>
+          </div>
         </section>
 
         <section class="metrics-grid" aria-label="Indicadores del piloto">

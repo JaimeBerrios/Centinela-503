@@ -1,0 +1,52 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[skins]{tcolorbox}
+\usepackage{geometry}
+\geometry{left=1.55cm,right=1.55cm}
+\definecolor{navy}{HTML}{173864}
+\newtcolorbox{killerbox_orig}[1]{
+  enhanced,colback=white,colframe=navy,boxrule=.6pt,
+  borderline west={2.2pt}{0pt}{navy},arc=1mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=2.5pt,after skip=2.5pt,title={#1},
+  coltitle=white,fonttitle=\bfseries,
+  attach boxed title to top left={xshift=2mm,yshift=-1.4mm},
+  boxed title style={colback=navy,colframe=navy,boxrule=0pt}
+}
+
+\newtcolorbox{killerbox_wrap}[1]{
+  enhanced,colback=white,colframe=navy,boxrule=.6pt,
+  borderline west={2.2pt}{0pt}{navy},arc=1mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=2.5pt,after skip=2.5pt,title={#1},
+  coltitle=white,fonttitle=\bfseries,
+  % remove attach boxed title to make it a full-width header
+}
+
+\newtcolorbox{killerbox_parbox}[1]{
+  enhanced,colback=white,colframe=navy,boxrule=.6pt,
+  borderline west={2.2pt}{0pt}{navy},arc=1mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=2.5pt,after skip=2.5pt,title={\parbox{16cm}{#1}},
+  coltitle=white,fonttitle=\bfseries,
+  attach boxed title to top left={xshift=2mm,yshift=-1.4mm},
+  boxed title style={colback=navy,colframe=navy,boxrule=0pt}
+}
+
+\begin{document}
+\begin{killerbox_orig}{1. Su categoría es la VIII (Inteligencia Artificial). ¿Dónde se ejecuta la IA y por qué no usar la API de ChatGPT u OpenAI?}
+Original text
+\end{killerbox_orig}
+
+\begin{killerbox_wrap}{1. Su categoría es la VIII (Inteligencia Artificial). ¿Dónde se ejecuta la IA y por qué no usar la API de ChatGPT u OpenAI?}
+Wrap text
+\end{killerbox_wrap}
+
+\begin{killerbox_parbox}{1. Su categoría es la VIII (Inteligencia Artificial). ¿Dónde se ejecuta la IA y por qué no usar la API de ChatGPT u OpenAI?}
+Parbox text
+\end{killerbox_parbox}
+\end{document}

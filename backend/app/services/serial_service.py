@@ -30,6 +30,16 @@ class SerialMonitor:
             except serial.SerialException: pass
         if self.thread and self.thread.is_alive(): self.thread.join(timeout=3)
 
+
+    def send_command(self, command: str) -> bool:
+        if self.serial_connection and self.serial_connection.is_open:
+            try:
+                self.serial_connection.write((command + "\n").encode("utf-8"))
+                return True
+            except serial.SerialException:
+                pass
+        return False
+
     def _listen(self):
         while self.is_running and not self.stop_event.is_set():
             try:

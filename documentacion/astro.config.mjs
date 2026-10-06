@@ -8,8 +8,8 @@ export default defineConfig({
 		starlight({
 			title: 'Centinela 503',
 			logo: {
-				src: './src/assets/logo.svg',
-				replacesTitle: true,
+				src: './src/assets/isotipo.svg',
+				replacesTitle: false,
 			},
 			defaultLocale: 'root',
 			locales: {

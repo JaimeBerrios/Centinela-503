@@ -132,3 +132,33 @@ def update_policies(payload: PolicyUpdate, user=Depends(require_roles("admin")))
 @router.get("/audit")
 def audit_log(user=Depends(require_roles("admin"))):
     return {"data": database.list_audit()}
+
+
+from pydantic import BaseModel
+class BulkDeletePayload(BaseModel):
+    ids: list[int]
+
+@router.post("/incidents/bulk-delete")
+def bulk_delete_incidents(payload: BulkDeletePayload, user=Depends(require_roles("admin", "coordinator"))):
+    if not payload.ids:
+        raise HTTPException(400, "No se proporcionaron IDs.")
+    try:
+        deleted = database.delete_incidents_bulk(payload.ids)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    record_audit(user, "Alertas eliminadas en lote", "incidente", 0, {"cantidad": deleted})
+    return {"message": f"{deleted} alertas eliminadas correctamente."}
+
+@router.delete("/incidents/{incident_id}")
+def delete_incident(incident_id: int, user=Depends(require_roles("admin", "coordinator"))):
+    previous = database.get_incident(incident_id)
+    if not previous: raise HTTPException(404, "No se encontró la alerta.")
+    
+    try:
+        deleted = database.delete_incident(incident_id)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    if deleted:
+        record_audit(user, "Alerta eliminada", "incidente", incident_id, {"anterior": previous})
+        return {"message": "Alerta eliminada correctamente."}
+    raise HTTPException(500, "Error al eliminar la alerta.")

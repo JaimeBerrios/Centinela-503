@@ -205,13 +205,13 @@
     const brigades = brigadeResult.data || [];
     const rows = incidents.map((item) => {
       const actions = canValidate && item.triage_state !== 'Validada'
-        ? `<div class="row-control"><select data-priority="${item.id}" aria-label="Prioridad que valida coordinación"><option value="" disabled${['Alta','Media','Baja'].includes(item.suggested_priority) ? '' : ' selected'}>Elegir</option><option${item.suggested_priority === 'Alta' ? ' selected' : ''}>Alta</option><option${item.suggested_priority === 'Media' ? ' selected' : ''}>Media</option><option${item.suggested_priority === 'Baja' ? ' selected' : ''}>Baja</option></select><button class="table-action" data-action="validate" data-id="${item.id}">Validar</button></div>`
+        ? `<div class="row-control"><select data-priority="${item.id}" aria-label="Prioridad que valida coordinación"><option value="" disabled${['Alta','Media','Baja'].includes(item.suggested_priority) ? '' : ' selected'}>Elegir</option><option${item.suggested_priority === 'Alta' ? ' selected' : ''}>Alta</option><option${item.suggested_priority === 'Media' ? ' selected' : ''}>Media</option><option${item.suggested_priority === 'Baja' ? ' selected' : ''}>Baja</option></select><button class="table-action" data-action="validate" data-id="${item.id}">Validar</button><button class="table-action danger-action" data-action="delete" data-id="${item.id}" style="margin-left:5px">Eliminar</button></div>`
         : (canValidate && item.resolution_status === 'Abierta'
           ? `<button class="table-action" data-action="recommend" data-id="${item.id}">Comparar brigadas disponibles</button><div class="recommendation-slot" id="recommendations-${item.id}"></div>`
           : `<span class="muted-cell">${canValidate ? '—' : 'Coordinación valida'}</span>`);
-      return `<tr><td><strong>#${item.id}</strong><small>${date(item.timestamp)}</small></td><td class="description-cell"><strong>${esc(item.category || 'Sin clasificar')} · ${esc(item.source || 'local')}</strong><small>${esc(item.incident_text || item.status)}</small></td><td>${priorityPill(item.suggested_priority)}<small class="table-subline">${esc(item.suggested_reason || 'Sin regla local aplicable')} · ${esc(item.triage_state)}</small></td><td>${statusPill(item.resolution_status)}</td><td>${actions}</td></tr>`;
+      return `<tr>${canValidate ? `<td><input type="checkbox" class="incident-checkbox" value="${item.id}" style="cursor:pointer"></td>` : ''}<td><strong>#${item.id}</strong><small>${date(item.timestamp)}</small></td><td class="description-cell"><strong>${esc(item.category || 'Sin clasificar')} · ${esc(item.source || 'local')}</strong><small>${esc(item.incident_text || item.status)}</small></td><td>${priorityPill(item.suggested_priority)}<small class="table-subline">${esc(item.suggested_reason || 'Sin regla local aplicable')} · ${esc(item.triage_state)}</small></td><td>${statusPill(item.resolution_status)}</td><td>${actions}</td></tr>`;
     }).join('');
-    $('#management-content').innerHTML = `<div class="management-stats"><div><span>REPORTES</span><strong>${incidents.length}</strong></div><div><span>PENDIENTES DE VALIDAR</span><strong>${incidents.filter((i) => i.triage_state !== 'Validada').length}</strong></div><div><span>PRIORIDAD ALTA SUGERIDA</span><strong>${incidents.filter((i) => i.suggested_priority === 'Alta').length}</strong></div></div>${incidents.length ? table(['REGISTRO','REPORTE','TRIAJE SUGERIDO','ESTADO','ACCIÓN'], rows) : emptyPanel('Aún no hay incidentes', 'Las alertas recibidas por los nodos y los reportes del dashboard aparecerán aquí.')}`;
+    $('#management-content').innerHTML = `<div class="management-stats"><div><span>REPORTES</span><strong>${incidents.length}</strong></div><div><span>PENDIENTES DE VALIDAR</span><strong>${incidents.filter((i) => i.triage_state !== 'Validada').length}</strong></div><div><span>PRIORIDAD ALTA SUGERIDA</span><strong>${incidents.filter((i) => i.suggested_priority === 'Alta').length}</strong></div></div>${incidents.length ? (canValidate ? `<div style="margin-bottom:10px"><button class="table-action danger-action" id="bulk-delete-btn" disabled>Eliminar Seleccionadas (0)</button></div>` : '') + table(canValidate ? ['<input type="checkbox" id="select-all-incidents" style="cursor:pointer">','REGISTRO','REPORTE','TRIAJE SUGERIDO','ESTADO','ACCIÓN'] : ['REGISTRO','REPORTE','TRIAJE SUGERIDO','ESTADO','ACCIÓN'], rows) : emptyPanel('Aún no hay incidentes', 'Las alertas recibidas por los nodos y los reportes del dashboard aparecerán aquí.')}`;
   }
 
   async function renderBrigadesPage() {
@@ -260,7 +260,7 @@
   async function renderPoliciesPage() {
     const result = await CentinelaAPI.getPolicies();
     const p = result.data || {};
-    $('#management-content').innerHTML = `<form class="policy-form" id="policy-form"><div class="policy-intro"><span class="readiness-icon"><svg><use href="#i-shield"/></svg></span><div><strong>Configuración del piloto local</strong><p>Estos valores se almacenan en SQLite y el radio de agrupación se aplica al mapa.</p></div></div><label for="cluster-radius">Radio de agrupación espacial</label><div class="policy-input-row"><input type="number" id="cluster-radius" name="cluster_radius_m" min="10" max="500" value="${esc(p.cluster_radius_m || 50)}"><span>metros</span></div><small class="field-help">Distancia máxima entre alertas para mostrarlas como un mismo grupo. Rango permitido: 10–500 m.</small><div class="policy-fixed-note"><svg><use href="#i-shield"/></svg><span><strong>Validación humana siempre activa</strong><small>El servidor exige que coordinación valide la prioridad antes de despachar una brigada.</small></span></div><label class="toggle-row"><span><strong>Simulador serial de desarrollo</strong><small>Genera reportes de prueba cuando no se puede abrir un puerto serial.</small></span><input type="checkbox" name="simulator_enabled"${p.simulator_enabled !== 'false' ? ' checked' : ''}><i></i></label><button class="primary-button" type="submit">Guardar políticas</button><div class="inline-message" id="policy-message"></div></form>`;
+    $('#management-content').innerHTML = `<form class="policy-form" id="policy-form"><div class="policy-intro"><span class="readiness-icon"><svg><use href="#i-shield"/></svg></span><div><strong>Configuración del piloto local</strong><p>Estos valores se almacenan en SQLite y el radio de agrupación se aplica al mapa.</p></div></div><label for="cluster-radius">Radio de agrupación espacial</label><div class="policy-input-row"><input type="number" id="cluster-radius" name="cluster_radius_m" min="10" max="500" value="${esc(p.cluster_radius_m || 50)}"><span>metros</span></div><small class="field-help">Distancia máxima entre alertas para mostrarlas como un mismo grupo. Rango permitido: 10–500 m.</small><div class="policy-fixed-note"><svg><use href="#i-shield"/></svg><span><strong>Validación humana siempre activa</strong><small>El servidor exige que coordinación valide la prioridad antes de despachar una brigada.</small></span></div><button class="primary-button" type="submit">Guardar políticas</button><div class="inline-message" id="policy-message"></div></form>`;
   }
 
   async function renderAuditPage() {
@@ -291,6 +291,38 @@
     const host = $('#management-content');
     if (host.dataset.eventsBound === 'true') return;
     host.dataset.eventsBound = 'true';
+    host.addEventListener('change', (e) => {
+      if (e.target.id === 'select-all-incidents') {
+        const checkboxes = host.querySelectorAll('.incident-checkbox');
+        checkboxes.forEach(cb => cb.checked = e.target.checked);
+      }
+      if (e.target.classList.contains('incident-checkbox') || e.target.id === 'select-all-incidents') {
+        const checked = host.querySelectorAll('.incident-checkbox:checked');
+        const btn = $('#bulk-delete-btn', host);
+        if (btn) {
+          btn.disabled = checked.length === 0;
+          btn.textContent = `Eliminar Seleccionadas (${checked.length})`;
+        }
+      }
+    });
+    host.addEventListener('click', async (e) => {
+      if (e.target.id === 'bulk-delete-btn') {
+        const checked = Array.from(host.querySelectorAll('.incident-checkbox:checked')).map(cb => Number(cb.value));
+        if (!checked.length) return;
+        if (!confirm(`¿Estás seguro de eliminar ${checked.length} alertas seleccionadas?`)) return;
+        e.target.disabled = true;
+        e.target.textContent = 'Eliminando...';
+        try {
+          const res = await CentinelaAPI.bulkDeleteIncidents(checked);
+          toast(res.message || 'Alertas eliminadas.');
+          return loadView(currentView);
+        } catch(error) {
+          toast(error.message || 'Error eliminando en lote.', true);
+          e.target.disabled = false;
+        }
+        return;
+      }
+    });
     host.addEventListener('click', async (event) => {
       const action = event.target.closest('[data-action]');
       if (!action) return;
@@ -302,6 +334,13 @@
           if (!priority) return toast('Elige la prioridad que validará coordinación.', true);
           await CentinelaAPI.updateIncident(id, { priority, triage_state: 'Validada', decision_note: `Coordinación validó la prioridad ${priority}.` });
           toast(`Alerta #${id} validada.`);
+          return loadView(currentView);
+        }
+        if (action.dataset.action === 'delete') {
+          if (!confirm(`¿Estás seguro de que deseas eliminar permanentemente la alerta #${id}?`)) return;
+          await CentinelaAPI.deleteIncident(id);
+          toast(`Alerta #${id} eliminada.`);
+          return loadView(currentView);
         }
         if (action.dataset.action === 'recommend') {
           const slot = $(`#recommendations-${id}`);

@@ -5,6 +5,7 @@ from app.schemas.sensor import IncidentCreate
 from app.services.prediction_service import suggest_triage
 from app.db import database
 from app.services.spatial_service import group_alerts
+from app.services.serial_service import serial_monitor
 
 router = APIRouter()
 
@@ -102,3 +103,13 @@ async def export_incidents_csv(user=Depends(require_roles("admin", "coordinator"
     }
     
     return StreamingResponse(output, media_type="text/csv", headers=headers)
+
+
+@router.post("/clear-hardware")
+async def clear_hardware_alert(user=Depends(require_roles("admin", "coordinator"))):
+    """Envía la señal CLEAR_ALERT al nodo receptor (ESP32) para apagar la alarma y limpiar pantalla."""
+    success = serial_monitor.send_command("CLEAR_ALERT")
+    if success:
+        return {"message": "Comando enviado al hardware exitosamente."}
+    else:
+        raise HTTPException(503, "El hardware receptor no está conectado al USB.")
