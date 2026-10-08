@@ -198,6 +198,25 @@ def update_incident(incident_id: int, fields: dict):
         return get_incident(incident_id)
     assignments = ", ".join(f"{key}=?" for key in fields)
     with connection() as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        previous = conn.execute("SELECT * FROM sensors_data WHERE id=?", (incident_id,)).fetchone()
+        if not previous:
+            return None
+        if fields.get("triage_state", previous["triage_state"]) == "Validada" and fields.get("priority", previous["priority"]) not in ("Alta", "Media", "Baja"):
+            raise ValueError("Define una prioridad Alta, Media o Baja antes de validar.")
+        active = conn.execute("SELECT * FROM assignments WHERE incident_id=? AND status IN ('Asignada','En camino','Atendiendo')", (incident_id,)).fetchall()
+        resolution = fields.get("resolution_status")
+        if resolution in ("Asignada", "En atención", "Abierta") and resolution != previous["resolution_status"]:
+            if active or resolution != "Abierta":
+                raise ValueError("Actualiza el avance desde la asignación de la brigada.")
+        if resolution in ("Resuelta", "Cancelada"):
+            assignment_status = "Completada" if resolution == "Resuelta" else "Cancelada"
+            conn.execute("UPDATE assignments SET status=?,completed_at=CURRENT_TIMESTAMP,updated_at=CURRENT_TIMESTAMP WHERE incident_id=? AND status IN ('Asignada','En camino','Atendiendo')", (assignment_status, incident_id))
+            for assignment in active:
+                conn.execute("""UPDATE brigades SET status='Disponible',updated_at=CURRENT_TIMESTAMP
+                    WHERE id=? AND status='Asignada' AND NOT EXISTS (
+                        SELECT 1 FROM assignments WHERE brigade_id=brigades.id
+                        AND status IN ('Asignada','En camino','Atendiendo'))""", (assignment["brigade_id"],))
         conn.execute(f"UPDATE sensors_data SET {assignments} WHERE id=?", (*fields.values(), incident_id))
         row = conn.execute("SELECT * FROM sensors_data WHERE id=?", (incident_id,)).fetchone()
         return dict(row) if row else None
@@ -342,6 +361,14 @@ def update_brigade(brigade_id: int, fields: dict):
 
 def create_assignment(incident_id: int, brigade_id: int, assigned_by: int, note: str):
     with connection() as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        incident = conn.execute("SELECT * FROM sensors_data WHERE id=?", (incident_id,)).fetchone()
+        if not incident or incident["resolution_status"] in ("Resuelta", "Cancelada"):
+            raise ValueError("La alerta no existe o ya está cerrada.")
+        if incident["triage_state"] != "Validada" or incident["priority"] not in ("Alta", "Media", "Baja"):
+            raise ValueError("Define y valida una prioridad antes de asignar.")
+        if conn.execute("SELECT 1 FROM assignments WHERE (incident_id=? OR brigade_id=?) AND status IN ('Asignada','En camino','Atendiendo')", (incident_id, brigade_id)).fetchone():
+            raise ValueError("La alerta o la brigada ya tiene una asignación activa.")
         cursor = conn.cursor()
         cursor.execute("SELECT status FROM brigades WHERE id=?", (brigade_id,))
         b_status = cursor.fetchone()
@@ -376,8 +403,14 @@ def get_assignment(assignment_id: int):
 
 def update_assignment(assignment_id: int, status: str, details: str):
     with connection() as conn:
+        conn.execute("BEGIN IMMEDIATE")
         row = conn.execute("SELECT * FROM assignments WHERE id=?", (assignment_id,)).fetchone()
         if not row: return None
+        transitions = {"Asignada": {"En camino", "Atendiendo", "Completada", "Cancelada"},
+                       "En camino": {"Atendiendo", "Completada", "Cancelada"},
+                       "Atendiendo": {"Completada", "Cancelada"}}
+        if status not in transitions.get(row["status"], set()):
+            raise ValueError("La asignación ya cambió de estado; actualiza la vista.")
         completed = "CURRENT_TIMESTAMP" if status in ("Completada", "Cancelada") else None
         conn.execute("""UPDATE assignments SET status=?,note=?,updated_at=CURRENT_TIMESTAMP,
                     completed_at=CASE WHEN ? IS NULL THEN completed_at ELSE CURRENT_TIMESTAMP END WHERE id=?""",

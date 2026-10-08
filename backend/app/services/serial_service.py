@@ -1,5 +1,8 @@
 import json
 import threading
+import time
+import re
+import math
 import serial
 from app.core.config import settings
 from app.db.database import insert_sensor_data
@@ -14,6 +17,7 @@ class SerialMonitor:
         self.thread = None
         self.stop_event = threading.Event()
         self.serial_connection = None
+        self.recent_alerts = {}
 
     def start(self):
         if self.thread and self.thread.is_alive(): return
@@ -49,7 +53,7 @@ class SerialMonitor:
                     while self.is_running and not self.stop_event.is_set():
                         raw = ser.readline()
                         if raw:
-                            try: line = raw.decode("utf-8").strip()
+                            try: line = raw.decode("utf-8", errors="replace").strip()
                             except UnicodeDecodeError: continue
                             self._process_data(line, source="hardware")
                 self.serial_connection = None
@@ -64,32 +68,77 @@ class SerialMonitor:
     def _process_data(self, raw_data: str, source: str = "hardware"):
         if not raw_data:
             return
-            
-        # Ignorar mensajes de inicialización del código de Jefferson
-        if "Nodo" in raw_data or "Error" in raw_data:
-            print(f"[Serial] Mensaje de sistema: {raw_data}")
+
+        raw_clean = raw_data.strip()
+        if not raw_clean:
             return
-            
-        # Intentamos leerlo como JSON primero
+
+        # Match complete protocol messages, never words inside an incident.
+        system_message = re.fullmatch(
+            r"(?:CLEAR_ALERT|OK|READY|LORA OK|ALERTA LIMPIADA|LIMPIADA|LIMPIAR|"
+            r"SILENCIO|(?:ALARMA |BUZZER )?(?:SILENCIAD[OA]|APAGAD[OA])|"
+            r"(?:NODO(?: RECEPTOR| EMISOR| \d+)? )?(?:CONECTADO|DESCONECTADO|INICIANDO|READY))"
+            r"[.!]?", raw_clean, re.IGNORECASE,
+        )
+        if system_message:
+            return
+
+        # 2. Limpiar caracteres de control espurios de LoRa/Serial
+        sanitized = "".join(ch for ch in raw_clean if ch >= " " or ch in "\n\r\t")
+
+        node_id = 1
+        status = "Emergencia"
+        lat = 13.4833
+        lon = -88.1833
+        text = ""
+
         try:
-            data = json.loads(raw_data)
+            data = json.loads(sanitized, strict=False)
+            if not isinstance(data, dict):
+                return
             node_id = int(data.get("node_id", 1))
             status = str(data.get("status", "Emergencia")).strip()
             lat = float(data.get("latitude", 13.4833))
             lon = float(data.get("longitude", -88.1833))
-            text = str(data.get("incident_text", ""))[:500]
+            text = str(data.get("incident_text", "")).strip()[:500]
         except (json.JSONDecodeError, TypeError, ValueError):
-            # ¡Si Jefferson envía solo texto, lo adaptamos automáticamente!
-            node_id = 1
-            status = "Emergencia"
-            # Coordenadas base por defecto (Campus San Miguel)
-            lat = 13.4833
-            lon = -88.1833
-            text = raw_data[:500]
-            
-        if not text:
+            # Si el JSON vino con caracteres corruptos, recuperar campos usando regex
+            if "incident_text" in sanitized:
+                match_txt = re.search(r'"incident_text"\s*:\s*"([^"]+)"', sanitized)
+                if match_txt:
+                    text = match_txt.group(1).strip()
+                match_id = re.search(r'"node_id"\s*:\s*(\d+)', sanitized)
+                if match_id:
+                    node_id = int(match_id.group(1))
+                match_lat = re.search(r'"latitude"\s*:\s*([-\d.]+)', sanitized)
+                if match_lat:
+                    try: lat = float(match_lat.group(1))
+                    except ValueError: pass
+                match_lon = re.search(r'"longitude"\s*:\s*([-\d.]+)', sanitized)
+                if match_lon:
+                    try: lon = float(match_lon.group(1))
+                    except ValueError: pass
+
+            if not text:
+                text = sanitized[:500].strip()
+
+        if not text or not (0 <= node_id <= 9999):
             return
-            
+        if not (math.isfinite(lat) and math.isfinite(lon) and -90 <= lat <= 90 and -180 <= lon <= 180):
+            return
+        text = text[:500]
+
+        # 3. Deduplicación inteligente (Debounce de 15s para retransmisiones LoRa o rebote de botón)
+        now = time.monotonic()
+        self.recent_alerts = {k: ts for k, ts in self.recent_alerts.items() if now - ts < 15.0}
+
+        dedup_key = (source, node_id, status, lat, lon, text.lower())
+        if dedup_key in self.recent_alerts:
+            elapsed = now - self.recent_alerts[dedup_key]
+            print(f"[Serial] Alerta duplicada descartada (recibida hace {elapsed:.1f}s): {text[:45]}...")
+            return
+
+        # 4. Triaje local y almacenamiento; deduplicar solo después del commit.
         try:
             suggestion = suggest_triage(text, status)
             new_id = insert_sensor_data(
@@ -100,6 +149,7 @@ class SerialMonitor:
                 triage_state="Pendiente de validación",
                 source=source,
             )
+            self.recent_alerts[dedup_key] = time.monotonic()
             print(f"[Base de Datos] Alerta {new_id} procesada | Triaje: {suggestion['suggested_priority']}")
         except Exception as e:
             print(f"[Serial] Error guardando la alerta: {e}")

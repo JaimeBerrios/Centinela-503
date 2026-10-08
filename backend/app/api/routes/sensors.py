@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from app.api.dependencies import require_roles, record_audit
 from app.db.database import get_all_sensors_data, insert_sensor_data
 from app.schemas.sensor import IncidentCreate

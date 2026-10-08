@@ -25,7 +25,10 @@ def update_incident(incident_id: int, payload: IncidentUpdate, user=Depends(requ
     note = fields.pop("decision_note", "").strip()
     fields = {key: value for key, value in fields.items() if value is not None}
     if not fields: raise HTTPException(422, "Indica una prioridad, validación o estado que quieras actualizar.")
-    updated = database.update_incident(incident_id, fields)
+    try:
+        updated = database.update_incident(incident_id, fields)
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
     changes = {key: {"anterior": previous.get(key), "nuevo": value} for key, value in fields.items() if previous.get(key) != value}
     details = note or "; ".join(f"{key}: {v['anterior']} → {v['nuevo']}" for key,v in changes.items())
     database.create_decision(incident_id, user["id"], "Actualización de alerta", details)
@@ -61,11 +64,16 @@ def create_assignment(payload: AssignmentCreate, user=Depends(require_roles("adm
     if incident["resolution_status"] in ("Resuelta", "Cancelada"):
         raise HTTPException(409, "No puedes asignar una alerta cerrada.")
     if brigade["status"] != "Disponible": raise HTTPException(409, "La brigada no está disponible.")
+    if incident["priority"] not in ("Alta", "Media", "Baja"):
+        raise HTTPException(409, "Define una prioridad antes de asignar.")
     if incident["triage_state"] != "Validada": raise HTTPException(409, "El coordinador debe validar la prioridad antes de asignar.")
     if any(a["incident_id"] == payload.incident_id and a["status"] in ("Asignada", "En camino", "Atendiendo")
            for a in database.list_assignments()):
         raise HTTPException(409, "Esta alerta ya tiene una brigada atendiendo la asignación.")
-    assignment_id = database.create_assignment(payload.incident_id, payload.brigade_id, user["id"], payload.note)
+    try:
+        assignment_id = database.create_assignment(payload.incident_id, payload.brigade_id, user["id"], payload.note)
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
     detail = payload.note.strip() or f"Asignación de {brigade['name']} a la alerta #{payload.incident_id}."
     database.create_decision(payload.incident_id, user["id"], "Brigada asignada", detail)
     record_audit(user, "Asignación creada", "asignación", assignment_id,
@@ -93,7 +101,10 @@ def update_assignment(assignment_id: int, payload: AssignmentUpdate, user=Depend
             raise HTTPException(403, "El operador solo puede informar el avance o completar la atención.")
     elif user["role"] not in ("admin", "coordinator"):
         raise HTTPException(403, "Tu rol no permite actualizar asignaciones.")
-    row = database.update_assignment(assignment_id, payload.status, payload.details)
+    try:
+        row = database.update_assignment(assignment_id, payload.status, payload.details)
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
     database.create_decision(assignment["incident_id"], user["id"], f"Asignación: {payload.status}", payload.details or "Estado operativo actualizado.")
     record_audit(user, "Asignación actualizada", "asignación", assignment_id, {"status": payload.status})
     return row
